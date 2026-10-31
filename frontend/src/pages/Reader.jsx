@@ -70,6 +70,11 @@ export default function Reader() {
   const children = useMemo(() => pages?.map((p, i) => (
     <FlipPage key={i} page={p} index={i} book={data.book} toc={toc} scale={pw / PAGE_W} />
   )), [pages, data, toc, pw]);
+  const idPage = useMemo(() => {
+    const m = {};
+    pages?.forEach((p, i) => p.blocks?.forEach((b) => { if (!(b.id in m)) m[b.id] = i; }));
+    return m;
+  }, [pages]);
 
   const flip = useCallback((n) => flipRef.current?.pageFlip()?.flip(n), []);
   const next = useCallback(() => flipRef.current?.pageFlip()?.flipNext(), []);
@@ -103,9 +108,7 @@ export default function Reader() {
   if (error) return <div className="reader-state" data-testid="reader-error">Gagal memuat buku. Muat ulang halaman.</div>;
   if (!data) return <div className="reader-state" data-testid="reader-loading"><div className="loader-candle" />Menyiapkan halaman buku…</div>;
 
-  const section = sectionAt(pages, current);
-  const idPage = {};
-  pages.forEach((p, i) => p.blocks?.forEach((b) => { if (!(b.id in idPage)) idPage[b.id] = i; }));
+  const section = sectionAt(pages, pages[current]?.kind === "blank" && !mobile ? current + 1 : current);
   const hlItems = Object.entries(highlights).map(([id, text]) => ({ id, text, page: idPage[id] }))
     .filter((h) => h.page !== undefined).sort((a, b) => a.page - b.page);
   const isBookmarked = bookmarks.some((b) => b.page === current);

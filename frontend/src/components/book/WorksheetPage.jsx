@@ -5,7 +5,9 @@ import { useQuiz, useStopFlip } from "./quizState";
 function WsField({ it, val, put, tid, print }) {
   if (it.t === "field") {
     return print
-      ? <div className="ws-area reflect-lines" style={{ height: fieldHeight(it.rows) }}>{val || ""}</div>
+      ? <div className="ws-area" style={{ height: fieldHeight(it.rows) }}>
+          {val ? <div className="ws-print-text">{val}</div> : Array.from({ length: it.rows }, (_, i) => <div key={i} className="ws-print-line" />)}
+        </div>
       : <textarea data-testid={tid} className="ws-area reflect-input" style={{ height: fieldHeight(it.rows) }} value={val || ""}
           placeholder="Tulis jawaban Anda…" onChange={(e) => put(e.target.value)} onKeyDown={(e) => e.stopPropagation()} />;
   }

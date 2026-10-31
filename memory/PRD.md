@@ -20,7 +20,15 @@ Personal web e-book reader for "Happiness Trading" by Ongah Hermanto: realistic 
 - Interactive quizzes (score, explanations, retake) + Lembar Praktik textareas (saved locally)
 - A5 PDF export verified
 
+## Iteration 2 (2026-06)
+- Real manuscript imported from author's docx via `backend/import_manuscript.py` -> `book_content.json` (20 bab, 5 bagian, worksheets Quiz I-IV + Lembar Praktik V, Kesimpulan, 20 author images inline). ~198 pages.
+- Original front cover (cropped from upload) + new matching back cover
+- Kept: generated opener illustrations, MC "Quiz Cepat" (rewritten to real content), Kata Pengantar page (placeholder note — not in manuscript)
+- New: stabilo (paragraph highlight) mode, page bookmarks, sidebar tabs (Daftar Isi/Penanda/Stabilo), soft synthesized page-flip sound toggle
+- Author profile from facts in manuscript; photo/full bio pending
+- Bagian III title not in manuscript -> provisional "Teknikal dan Delegasi Smart Trading"
+
 ## Backlog
-- P0: Import real manuscript (from user's upload) + real front cover
-- P1: Real author bio/photo; replace placeholder quizzes with manuscript quizzes
-- P2: Move images to object storage; embed in mynalura.com; bookmarks/notes
+- P0: Author bio + photo; confirm Bagian III title; Kata Pengantar text or remove
+- P1: Better mobile legibility (text ~10px at 390px); hide blank versos on mobile
+- P2: Move images to object storage; embed in mynalura.com; sentence-level highlights/notes

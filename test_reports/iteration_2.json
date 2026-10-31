@@ -1,0 +1,30 @@
+{
+  "summary": "Focused frontend run (PDF and backend skipped). All requested flows PASSED: book has 198 pages, indicator shows '/ 197', the front cover is an IMG (naturalWidth 880), and back-cover is the last page. TOC lists Bab 1-20 with real titles; toc-link-bab-8 lands on spread 79-80 with chapter-opener-8 on page 80, matching the TOC number 80; toc-link-kesimpulan lands on page 194. Chapter text pages contain real manuscript text and 20 .blk-img images. Worksheet 1: typing in ws-p1-bigwhy and ws-p1-risk does not flip the page (ArrowRight in the textarea doesn't either), and both values persist after reload. ws-p2-emosi-0 toggles is-on. Quiz Cepat part 1: clicking options did not flip the page; submitting showed score 2/3, which persists after reload. Highlight mode: bab-1:2 gets blk-hl without a page flip, the Stabilo tab lists the highlight, clicking it jumps to 23-24, it persists after reload, and clicking again removes it. Bookmark toggle, Penanda list and bookmark-remove all work. Sound toggle writes ht-sound 1->0->1. Mobile 390x844: toolbar scrollWidth equals clientWidth (390), single page view, and highlighting works on mobile.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "Toolbar section title", "issue": "On the Kesimpulan spread (193-194) the toolbar subtitle shows 'Lembar Praktik Bagian V' because current = left page (a blank verso belonging to the previous section). Minor.", "selector": "[data-testid='current-section-title']", "priority": "LOW"}
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Desktop spreads", "issues": ["Many chapter openers sit on the right page with a fully blank left verso (e.g. 79 before Bab 8, 193 before Kesimpulan). This is normal book convention but adds many empty screens. On mobile it shows as a blank single page."]},
+      {"screen": "Mobile 390x844", "issues": ["Body text is scaled down to about 9-10px effective size, which is hard to read on mobile; consider a larger mobile scale or reflow."]},
+      {"screen": "Desktop bookmark", "issues": ["In spread mode a bookmark always records the left page (e.g. 23 for spread 23-24). Acceptable, but the label could show the spread."]}
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Optional: derive the toolbar section title from the right page when the left page is blank (Kesimpulan spread)",
+    "Optional: improve mobile text legibility; hide blank versos in portrait mode"
+  ],
+  "critical_code_review_comments": [
+    "Reader.jsx: idPage/hlItems are recomputed on every render over all 198 pages; wrap in useMemo",
+    "Reader.jsx: ht-page from localStorage is not validated for NaN (carried over from iteration 1)"
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (skipped)", "frontend": "100%"},
+  "seed_data_creation": "none (localStorage only)",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "198 pages. Bab 1 opener is p22, first text page p23 (contains bab-1:2). toc-link-quiz-1 -> spread 49-50 (worksheet-part-1 on 50); ws-p1-risk on p51; quiz-container-part-1 starts at p52, q2/submit on p53. toc-link-quiz-2 -> ws-p2-emosi-0 visible at 97-98. Bab 8 opener p80; Kesimpulan p194. localStorage keys: ht-page, ht-quiz, ht-hl, ht-bm, ht-sound. PDF is still untested."
+}
