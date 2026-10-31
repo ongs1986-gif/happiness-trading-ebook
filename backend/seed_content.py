@@ -1,4 +1,4 @@
-SEED_VERSION = 2
+SEED_VERSION = 3
 
 PLACEHOLDER = "[Teks contoh — akan diganti dengan naskah asli dari penulis.]"
 
@@ -85,7 +85,7 @@ def chapter_text(title: str) -> str:
     ])
 
 
-def build_sections():
+def build_placeholder_sections():
     s = []
 
     def add(**kw):
@@ -140,12 +140,13 @@ def build_sections():
 
 META = {
     "title": "Happiness Trading",
-    "subtitle": "Menemukan Ketenangan & Kebahagiaan di Balik Setiap Candle",
+    "subtitle": "achieve your optimum trading performance with mindfulness",
     "author": "Ongah Hermanto",
     "publisher": "mynalura.com",
     "year": "2026",
-    "front_cover": None,
-    "back_blurb": "Trading bukan sekadar membaca chart, melainkan juga membaca diri sendiri. Happiness Trading mengajak Anda mengelola emosi, hadir sepenuhnya, membangun disiplin, dan mengembalikan trading ke tempatnya: sebuah perjalanan yang menyenangkan.",
+    "front_cover": "cover_front.jpg",
+    "author_photo": None,
+    "back_blurb": "Trading bukan hanya tentang membaca pasar. Trading adalah perjalanan membaca diri sendiri. Happiness Trading mengajak Anda membangun fondasi profesional, menguasai emosi, membaca pasar dengan jernih, menjaga modal dengan matematika kedamaian batin, hingga menjadi The Happiness Trader — tetap utuh saat rugi, rendah hati saat untung.",
     "config": {
         "page_width": 440,
         "page_height": 624,
@@ -153,3 +154,9 @@ META = {
         "fonts": {"title": "Playfair Display", "subtitle": "Montserrat", "body": "Inter"},
     },
 }
+
+
+def build_sections():
+    import json
+    from pathlib import Path
+    return json.loads((Path(__file__).parent / "book_content.json").read_text())

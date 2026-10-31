@@ -1,6 +1,19 @@
-import { ChevronLeft, ChevronRight, Download, List } from "lucide-react";
+import { Bookmark, BookmarkCheck, ChevronLeft, ChevronRight, Download, Highlighter, List, Volume2, VolumeX } from "lucide-react";
 
-export function Toolbar({ onToc, onPrev, onNext, current, total, mobile, onPdf, sectionTitle }) {
+function ToolIcons({ hlMode, onHl, bookmarked, onBookmark, sound, onSound }) {
+  return (
+    <div className="flex items-center gap-1.5">
+      <button type="button" className={`tb-icon ${hlMode ? "is-on-hl" : ""}`} data-testid="btn-highlight-mode" onClick={onHl}
+        aria-label="Mode stabilo" title="Mode stabilo"><Highlighter size={16} /></button>
+      <button type="button" className={`tb-icon ${bookmarked ? "is-on-bm" : ""}`} data-testid="btn-bookmark" onClick={onBookmark}
+        aria-label="Penanda halaman" title="Tandai halaman ini">{bookmarked ? <BookmarkCheck size={16} /> : <Bookmark size={16} />}</button>
+      <button type="button" className="tb-icon" data-testid="btn-sound-toggle" onClick={onSound}
+        aria-label="Suara membalik halaman" title={sound ? "Matikan suara" : "Nyalakan suara"}>{sound ? <Volume2 size={16} /> : <VolumeX size={16} />}</button>
+    </div>
+  );
+}
+
+export function Toolbar({ onToc, onPrev, onNext, current, total, mobile, onPdf, sectionTitle, ...tools }) {
   const label = mobile || current === 0 || current === total - 1 ? `${current}` : `${current}–${Math.min(current + 1, total - 1)}`;
   return (
     <header className="toolbar" data-testid="top-toolbar">
@@ -24,9 +37,12 @@ export function Toolbar({ onToc, onPrev, onNext, current, total, mobile, onPdf, 
           <ChevronRight size={18} />
         </button>
       </div>
-      <button type="button" className="tb-btn tb-primary" data-testid="btn-download-pdf" onClick={onPdf}>
-        <Download size={16} /><span className="hidden sm:inline">Download PDF</span>
-      </button>
+      <div className="flex items-center gap-2">
+        <ToolIcons {...tools} />
+        <button type="button" className="tb-btn tb-primary" data-testid="btn-download-pdf" onClick={onPdf}>
+          <Download size={16} /><span className="hidden xl:inline">Download PDF</span>
+        </button>
+      </div>
     </header>
   );
 }

@@ -219,9 +219,10 @@
 
 /* Author */
 .author-page { align-items: flex-start; }
-.author-avatar { width: 74px; height: 74px; border-radius: 999px; display: grid; place-items: center; background: var(--cream); border: 1px solid var(--line); font-family: "Playfair Display", serif; font-size: 26px; font-weight: 700; color: var(--green); }
-.author-name { font-family: "Playfair Display", serif; font-weight: 700; font-size: 22px; margin: 14px 0 4px; }
-.author-bio { margin-top: 18px; font-size: 12.5px; line-height: 1.72; }
+.author-avatar { width: 64px; height: 64px; flex: none; border-radius: 999px; display: grid; place-items: center; background: var(--cream); border: 1px solid var(--line); font-family: "Playfair Display", serif; font-size: 22px; font-weight: 700; color: var(--green); }
+.author-head { display: flex; align-items: center; gap: 14px; }
+.author-name { font-family: "Playfair Display", serif; font-weight: 700; font-size: 20px; margin: 0 0 3px; }
+.author-bio { margin-top: 14px; font-size: 11.5px; line-height: 1.65; }
 .author-bio .blk-p { text-indent: 0; }
 
 .blank-page { position: absolute; inset: 0; display: grid; place-items: center; color: #DDD4C2; font-size: 10px; }
@@ -229,3 +230,65 @@
 /* PDF render root */
 .print-root { position: fixed; left: 0; top: 0; z-index: -10; pointer-events: none; }
 .print-root .pg { box-shadow: none; }
+
+/* Manuscript blocks */
+.blk-h3 { font-family: Montserrat, sans-serif; font-weight: 600; font-size: 12px; margin: 12px 0 5px; color: #3d3a38; }
+.blk-img { margin: 6px 0 14px; height: 238px; }
+.blk-img img { width: 100%; height: 100%; object-fit: cover; border-radius: 3px; display: block; }
+.blk-verse { white-space: pre-line; font-family: "Playfair Display", serif; font-style: italic; font-size: 14px; line-height: 1.7; margin: 0 0 16px; text-align: center; color: #3d3a38; }
+.blk-hl { background: linear-gradient(180deg, transparent 8%, rgba(250, 222, 120, 0.55) 8%, rgba(250, 222, 120, 0.55) 96%, transparent 96%); border-radius: 2px; }
+.hl-mode .blk:not(.blk-img) { cursor: pointer; transition: background-color .15s; }
+.hl-mode .blk:not(.blk-img):not(.blk-hl):hover { background: rgba(250, 222, 120, 0.25); }
+.ch-sub { font-family: Montserrat, sans-serif; font-weight: 500; font-size: 12.5px; line-height: 1.5; color: var(--taupe); margin-top: 8px; }
+.author-photo { object-fit: cover; }
+
+/* Worksheet */
+.ws { top: 46px; }
+.ws-title { margin-bottom: 12px; }
+.ws-title-h { font-family: "Playfair Display", serif; font-weight: 700; font-size: 25px; line-height: 1.15; margin: 6px 0 4px; }
+.ws-title-sub { font-family: Montserrat, sans-serif; font-weight: 500; font-size: 11.5px; color: var(--taupe); }
+.ws-h { font-family: Montserrat, sans-serif; font-weight: 700; font-size: 12.5px; color: var(--green); margin: 12px 0 6px; }
+.ws-p { font-size: 11.5px; line-height: 1.6; margin-bottom: 8px; color: #45413e; }
+.ws-item { margin-bottom: 10px; }
+.ws-label { font-family: Montserrat, sans-serif; font-weight: 600; font-size: 11px; line-height: 1.5; margin-bottom: 4px; }
+.ws-area { display: block; }
+.ws-line { height: 30px; display: flex; align-items: flex-end; gap: 6px; border-bottom: 1px solid #CFC5B2; padding-bottom: 3px; }
+.ws-affix { font-family: Montserrat, sans-serif; font-size: 11px; font-weight: 600; color: var(--taupe); white-space: nowrap; }
+.ws-input { flex: 1; min-width: 0; border: none; outline: none; background: transparent; font-size: 12.5px; color: var(--charcoal); font-family: Inter, sans-serif; }
+.ws-input:focus { background: rgba(238, 246, 241, .6); }
+.ws-check { display: flex; align-items: flex-start; gap: 7px; width: 100%; text-align: left; font-size: 11px; line-height: 1.45; padding: 3px 0; color: var(--charcoal); }
+.ws-check svg { flex: none; margin-top: 2px; color: var(--taupe); }
+.ws-check.is-on svg { color: var(--green); }
+.ws-check.is-on span { color: var(--green); font-weight: 500; }
+
+/* New back cover (matches original front cover) */
+.back2 { position: absolute; inset: 0; background: #EFEFED; display: flex; flex-direction: column; justify-content: space-between; padding: 0 44px 34px; font-family: Montserrat, sans-serif; color: #2f2f2f; }
+.back2-top { display: flex; justify-content: center; }
+.back2-mid { text-align: center; }
+.back2-title { font-weight: 700; font-size: 34px; line-height: 1; letter-spacing: -0.02em; margin-bottom: 22px; }
+.back2-title .r { color: #D0403A; }
+.back2-title .g { color: #5DAE4B; }
+.back2-quote { font-weight: 600; font-size: 13.5px; line-height: 1.55; margin-bottom: 16px; }
+.back2-blurb { font-size: 11px; line-height: 1.75; color: #555; text-align: left; }
+.back2-tag { margin-top: 16px; font-weight: 600; font-size: 10.5px; letter-spacing: .08em; color: #5DAE4B; }
+.back2-foot { display: flex; align-items: flex-end; justify-content: space-between; font-size: 9px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: #6b6b6b; }
+
+/* Toolbar states & sidebar tabs */
+.tb-icon.is-on-hl { background: #FAE69A; border-color: #E0C55A; }
+.tb-icon.is-on-bm { background: var(--green-soft); border-color: var(--green); color: var(--green); }
+.toc-tabs { display: flex; gap: 4px; margin-top: 12px; padding: 3px; background: var(--ivory); border: 1px solid var(--line); border-radius: 999px; }
+.toc-tab { flex: 1; padding: 6px 8px; border-radius: 999px; font-family: Montserrat, sans-serif; font-weight: 600; font-size: 11px; color: var(--taupe); transition: background-color .18s, color .18s; }
+.toc-tab.is-active { background: var(--charcoal); color: var(--ivory); }
+.toc-empty { padding: 8px 12px; font-size: 13px; line-height: 1.6; color: var(--taupe); }
+.saved-row { display: flex; align-items: center; gap: 4px; }
+.saved-del { width: 28px; height: 28px; display: grid; place-items: center; border-radius: 999px; color: var(--taupe); }
+.saved-del:hover { background: var(--red-soft); color: var(--red); }
+.hl-row { display: flex; flex-direction: column; gap: 4px; width: 100%; text-align: left; padding: 10px 12px; border-radius: 10px; border-left: 3px solid #E9CD5E; margin-bottom: 6px; background: rgba(250, 230, 154, 0.25); transition: background-color .18s; }
+.hl-row:hover { background: rgba(250, 230, 154, 0.5); }
+.hl-text { font-family: "Playfair Display", serif; font-style: italic; font-size: 13px; line-height: 1.5; color: var(--charcoal); }
+@media (max-width: 640px) {
+  .toolbar { gap: 6px; padding: 0 8px; }
+  .tb-icon { width: 32px; height: 32px; }
+  .tb-btn { padding: 8px 10px; }
+  .tb-pill { padding: 6px 9px; font-size: 11px; }
+}

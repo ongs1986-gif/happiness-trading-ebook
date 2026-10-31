@@ -58,8 +58,8 @@ export function QuizPage({ page }) {
     <div className="pg-pad quiz" ref={ref} data-testid={page.first ? `quiz-container-part-${part}` : undefined}>
       {page.first && (
         <>
-          <div className="kicker">Bagian {part} · Evaluasi</div>
-          <h2 className="quiz-title">Quiz Bagian {part}</h2>
+          <div className="kicker">Bagian {part} · Evaluasi Tambahan</div>
+          <h2 className="quiz-title">Quiz Cepat Bagian {part}</h2>
         </>
       )}
       {page.questions.map((q) => (

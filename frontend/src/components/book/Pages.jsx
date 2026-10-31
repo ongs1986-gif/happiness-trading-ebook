@@ -1,6 +1,8 @@
-import { forwardRef } from "react";
+import { forwardRef, useEffect, useRef } from "react";
 import { blockClass, parseContent, PAGE_W, PAGE_H } from "../../lib/book";
 import { QuizPage, ReflectionPage } from "./QuizPage";
+import { WorksheetPage } from "./WorksheetPage";
+import { useReaderState } from "./readerState";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 export const assetUrl = (name) => `${API}/assets/${name}`;
@@ -29,7 +31,7 @@ export function Candles({ className = "", height = 100 }) {
 
 function Cover({ book }) {
   const m = book.meta;
-  if (m.front_cover) return <img src={m.front_cover} alt="Cover" className="cover-img" crossOrigin="anonymous" />;
+  if (m.front_cover) return <img src={assetUrl(m.front_cover)} alt="Cover Happiness Trading" className="cover-img" crossOrigin="anonymous" data-testid="front-cover" />;
   return (
     <div className="cover" data-testid="front-cover">
       <div className="cover-author">{m.author}</div>
@@ -44,18 +46,34 @@ function Cover({ book }) {
   );
 }
 
+export function CandleFace({ happy, size = 46 }) {
+  const color = happy ? "#5DAE4B" : "#D0403A";
+  return (
+    <svg width={size * 0.5} height={size * 1.6} viewBox="0 0 30 96" aria-hidden>
+      <rect x="11" y="0" width="8" height="96" rx="4" fill={color} />
+      <rect x="1" y="24" width="28" height="44" rx="7" fill={color} />
+      <circle cx="10" cy={happy ? 40 : 52} r="3.4" fill="#fff" />
+      <circle cx="20" cy={happy ? 40 : 52} r="3.4" fill="#fff" />
+      <path d={happy ? "M8 50 Q15 60 22 50" : "M8 42 Q15 32 22 42"} stroke="#fff" strokeWidth="3.2" fill="none" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 function Back({ book }) {
   const m = book.meta;
   return (
-    <div className="cover back" data-testid="back-cover">
-      <div className="cover-author">{m.title}</div>
-      <div className="back-mid">
-        <p className="back-quote">“Pasar akan selalu bergerak. Biarkan hati Anda tetap tenang.”</p>
-        <p className="back-blurb">{m.back_blurb}</p>
+    <div className="back2" data-testid="back-cover">
+      <div className="back2-top"><CandleFace size={70} /></div>
+      <div className="back2-mid">
+        <div className="back2-title">ha<span className="r">p</span>piness<br />trad<span className="g">i</span>ng</div>
+        <p className="back2-quote">“Menjadi Happiness Trader berarti belajar untuk tetap utuh saat rugi, tetap rendah hati saat untung.”</p>
+        <p className="back2-blurb">{m.back_blurb}</p>
+        <p className="back2-tag">Happy Trade. Happy Mind. Happier Life.</p>
       </div>
-      <div>
-        <Candles className="back-candles" height={60} />
-        <div className="back-foot"><span>{m.author}</span><span>{m.publisher}</span></div>
+      <div className="back2-foot">
+        <span>{m.author}</span>
+        <CandleFace happy size={50} />
+        <span>{m.publisher}</span>
       </div>
     </div>
   );
@@ -107,12 +125,37 @@ function TocPage({ page, toc }) {
   );
 }
 
-function TextPage({ page }) {
+function Block({ b, hl, onToggle }) {
+  const cls = `${blockClass(b)}${hl ? " blk-hl" : ""}`;
+  if (b.t === "img") return <div className={cls}><img src={assetUrl(b.src)} alt="" crossOrigin="anonymous" /></div>;
+  return (
+    <div className={cls} data-hl-id={b.id} onClick={onToggle ? () => onToggle(b.id, b.text) : undefined}>{b.text}</div>
+  );
+}
+
+// In highlight mode, stop page-flip from reacting so taps toggle highlights instead.
+function useHlStop() {
+  const ref = useRef(null);
+  useEffect(() => {
+    const el = ref.current;
+    const stop = (e) => { if (document.body.dataset.hlmode === "1") e.stopPropagation(); };
+    const types = ["mousedown", "touchstart", "pointerdown", "mouseup", "touchend"];
+    types.forEach((t) => el.addEventListener(t, stop));
+    return () => types.forEach((t) => el.removeEventListener(t, stop));
+  }, []);
+  return ref;
+}
+
+function TextPage({ page, print }) {
+  const { highlights, toggleHighlight, hlMode } = useReaderState();
+  const ref = useHlStop();
   return (
     <>
       <div className="pg-header">{page.header}</div>
-      <div className="page-body">
-        {page.blocks.map((b, i) => <div key={i} className={blockClass(b)}>{b.text}</div>)}
+      <div className={`page-body ${hlMode && !print ? "hl-mode" : ""}`} ref={ref}>
+        {page.blocks.map((b, i) => (
+          <Block key={i} b={b} hl={!!highlights[b.id] && b.t !== "img"} onToggle={hlMode && !print && b.t !== "img" ? toggleHighlight : undefined} />
+        ))}
       </div>
     </>
   );
@@ -138,20 +181,28 @@ function ChapterPage({ page }) {
       <div className="kicker">Bagian {s.part_number} · Bab {s.chapter_number}</div>
       <div className="ch-num">{String(s.chapter_number).padStart(2, "0")}</div>
       <h2 className="ch-title">{s.title}</h2>
+      {s.subtitle && <p className="ch-sub">{s.subtitle}</p>}
       <div className="ch-rule" />
       {s.illustration && <img className="ch-illus" src={assetUrl(s.illustration)} alt={s.title} crossOrigin="anonymous" />}
     </div>
   );
 }
 
-function AuthorPage({ page }) {
+function AuthorPage({ page, book }) {
   const blocks = parseContent(page.section.content);
+  const photo = book.meta.author_photo;
   return (
     <div className="pg-pad author-page" data-testid="author-profile-card">
       <h2 className="blk blk-title">Profil Penulis</h2>
-      <div className="author-avatar">OH</div>
-      <div className="author-name">Ongah Hermanto</div>
-      <div className="kicker">Penulis · Trader</div>
+      <div className="author-head">
+        {photo
+          ? <img className="author-avatar author-photo" src={assetUrl(photo)} alt="Ongah Hermanto" crossOrigin="anonymous" />
+          : <div className="author-avatar">OH</div>}
+        <div>
+          <div className="author-name">Ongah Hermanto</div>
+          <div className="kicker">Penulis · Founder A Trader Hub Indonesia</div>
+        </div>
+      </div>
       <div className="author-bio">
         {blocks.map((b, i) => <div key={i} className={blockClass(b)}>{b.text}</div>)}
       </div>
@@ -165,7 +216,7 @@ function Blank() {
 
 const RENDER = {
   cover: Cover, back: Back, title: TitlePage, dedication: Dedication, toc: TocPage, text: TextPage,
-  part: PartPage, chapter: ChapterPage, author: AuthorPage, blank: Blank, quiz: QuizPage, reflection: ReflectionPage,
+  part: PartPage, chapter: ChapterPage, author: AuthorPage, blank: Blank, quiz: QuizPage, reflection: ReflectionPage, worksheet: WorksheetPage,
 };
 
 export function PageContent({ page, index, book, toc, print }) {

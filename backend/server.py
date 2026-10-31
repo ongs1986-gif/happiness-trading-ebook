@@ -29,6 +29,8 @@ class Section(BaseModel):
     order: int
     type: str
     title: str
+    subtitle: Optional[str] = None
+    variant: Optional[str] = None
     group: str
     start_right: bool = True
     content: str = ""
@@ -46,6 +48,7 @@ class BookMeta(BaseModel):
     publisher: str
     year: str
     front_cover: Optional[str] = None
+    author_photo: Optional[str] = None
     back_blurb: str
     config: Dict[str, Any]
 

@@ -5,10 +5,14 @@ export const BODY_H = 514;
 const TOC_PER_PAGE = 17;
 const Q_PER_PAGE = 2;
 const SPLITTABLE = new Set(["p", "quote", "li", "note"]);
+const IMG_H = 238;
 
 export function parseContent(text = "") {
   return text.split("\n").filter((l) => l.trim()).map((l) => {
+    if (l.startsWith("### ")) return { t: "h3", text: l.slice(4) };
     if (l.startsWith("## ")) return { t: "h2", text: l.slice(3) };
+    if (l.startsWith("![](")) return { t: "img", src: l.slice(4, -1), text: "" };
+    if (l.startsWith("~ ")) return { t: "verse", text: l.slice(2).split("\\n").join("\n") };
     if (l.startsWith("> ")) return { t: "quote", text: l.slice(2) };
     if (l.startsWith("- ")) return { t: "li", text: l.slice(2) };
     if (l.startsWith("[") && l.endsWith("]")) return { t: "note", text: l };
@@ -21,28 +25,67 @@ export const blockClass = (b) => `blk blk-${b.t}${b.cont ? " blk-cont" : ""}`;
 function makeNode(b) {
   const d = document.createElement("div");
   d.className = blockClass(b);
-  d.textContent = b.text;
+  if (b.t === "img") d.style.height = `${IMG_H}px`;
+  else d.textContent = b.text;
   return d;
 }
 
-function paginate(blocks, el) {
+const div = (cls, text, style) => {
+  const d = document.createElement("div");
+  d.className = cls;
+  if (text) d.textContent = text;
+  if (style) Object.assign(d.style, style);
+  return d;
+};
+
+export const fieldHeight = (rows) => rows * 24;
+
+function makeWsNode(it) {
+  if (it.t === "title") {
+    const d = div("ws-title");
+    d.append(div("kicker", it.kicker), div("ws-title-h", it.text), div("ws-title-sub", it.sub));
+    return d;
+  }
+  if (it.t === "h") return div("ws-h", it.text);
+  if (it.t === "p") return div("ws-p", it.text);
+  const d = div("ws-item");
+  if (it.label) d.appendChild(div("ws-label", it.label));
+  if (it.t === "field") d.appendChild(div("ws-area", "", { height: `${fieldHeight(it.rows)}px` }));
+  if (it.t === "input") d.appendChild(div("ws-line"));
+  if (it.t === "checks") it.options.forEach((o) => d.appendChild(div("ws-check", o)));
+  return d;
+}
+
+function paginate(blocks, el, make = makeNode, split = true) {
   const pages = [];
   let cur = [];
   el.innerHTML = "";
   const fits = () => el.scrollHeight <= el.clientHeight;
   const tryFit = (b) => {
-    const n = makeNode(b);
+    const n = make(b);
     el.appendChild(n);
     const ok = fits();
     el.removeChild(n);
     return ok;
   };
-  const commit = (b) => { el.appendChild(makeNode(b)); cur.push(b); };
+  const commit = (b) => { el.appendChild(make(b)); cur.push(b); };
   const newPage = () => { pages.push(cur); cur = []; el.innerHTML = ""; };
 
-  for (const b of blocks) {
+  const KEEP = new Set(["h2", "h3", "h"]);
+  const fitsWithNext = (b, nx) => {
+    const a = make(b);
+    const n = make(nx && SPLITTABLE.has(nx.t) && split ? { ...nx, text: nx.text.split(" ").slice(0, 12).join(" ") } : nx);
+    el.append(a, n);
+    const ok = fits();
+    a.remove(); n.remove();
+    return ok;
+  };
+
+  for (const [bi, b] of blocks.entries()) {
+    const nx = blocks[bi + 1];
+    if (KEEP.has(b.t) && nx && cur.length && !fitsWithNext(b, nx)) { newPage(); commit(b); continue; }
     if (tryFit(b)) { commit(b); continue; }
-    if (!SPLITTABLE.has(b.t)) { if (cur.length) newPage(); commit(b); continue; }
+    if (!split || !SPLITTABLE.has(b.t)) { if (cur.length) newPage(); commit(b); continue; }
     let words = b.text.split(" ");
     let cont = !!b.cont;
     while (words.length) {
@@ -82,16 +125,22 @@ export function buildBook(sections, measureEl) {
   for (const s of sections) {
     if (s.start_right && pages.length % 2 === 1) pages.push({ kind: "blank" });
     starts[s.key] = pages.length;
+    const withIds = (blocks) => blocks.map((b, i) => ({ ...b, id: `${s.key}:${i}` }));
     if (s.type === "toc") {
       for (let i = 0; i < tocPageCount; i++) pages.push({ kind: "toc", chunkIndex: i, section: s });
     } else if (s.type === "text") {
-      const blocks = [{ t: "title", text: s.title }, ...parseContent(s.content)];
+      const blocks = withIds([{ t: "title", text: s.title }, ...parseContent(s.content)]);
       paginate(blocks, measureEl).forEach((bl) => pages.push({ kind: "text", section: s, blocks: bl, header: s.title }));
     } else if (s.type === "chapter") {
       pages.push({ kind: "chapter", section: s });
       const header = `Bab ${s.chapter_number} · ${s.title}`;
-      paginate(parseContent(s.content), measureEl).forEach((bl) => pages.push({ kind: "text", section: s, blocks: bl, header }));
+      paginate(withIds(parseContent(s.content)), measureEl).forEach((bl) => pages.push({ kind: "text", section: s, blocks: bl, header }));
     } else if (s.type === "quiz") {
+      const ws = s.quiz?.worksheet || [];
+      if (ws.length) {
+        const items = [{ t: "title", kicker: `Bagian ${s.part_number} · Lembar Praktik`, text: s.title, sub: s.subtitle || "" }, ...ws];
+        paginate(items, measureEl, makeWsNode, false).forEach((it) => pages.push({ kind: "worksheet", section: s, items: it }));
+      }
       const qs = s.quiz?.questions || [];
       const groups = chunk(qs.map((q, i) => ({ ...q, index: i })), Q_PER_PAGE);
       groups.forEach((g, gi) => pages.push({ kind: "quiz", section: s, questions: g, first: gi === 0, last: gi === groups.length - 1 }));

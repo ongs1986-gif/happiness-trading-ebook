@@ -7,6 +7,8 @@ import { buildBook, sectionAt, PAGE_W, PAGE_H, BODY_W, BODY_H } from "../lib/boo
 import { exportPdf } from "../lib/exportPdf";
 import { FlipPage, PageContent } from "../components/book/Pages";
 import { QuizProvider } from "../components/book/quizState";
+import { useReaderState } from "../components/book/readerState";
+import { playFlipSound } from "../lib/sound";
 import { Toolbar } from "../components/reader/Toolbar";
 import { TocSidebar } from "../components/reader/TocSidebar";
 import { PdfModal } from "../components/reader/PdfModal";
@@ -52,6 +54,10 @@ export default function Reader() {
   const flipRef = useRef(null);
   const startRef = useRef(current);
   const { mobile, scale } = useLayout();
+  const { bookmarks, toggleBookmark, highlights, hlMode, setHlMode } = useReaderState();
+  const [sound, setSound] = useState(() => localStorage.getItem("ht-sound") !== "0");
+  const soundRef = useRef(sound);
+  useEffect(() => { soundRef.current = sound; localStorage.setItem("ht-sound", sound ? "1" : "0"); }, [sound]);
 
   useEffect(() => { loadBook().then(setData).catch(() => setError(true)); }, []);
   useEffect(() => { localStorage.setItem("ht-page", String(current)); startRef.current = current; }, [current]);
@@ -98,13 +104,21 @@ export default function Reader() {
   if (!data) return <div className="reader-state" data-testid="reader-loading"><div className="loader-candle" />Menyiapkan halaman buku…</div>;
 
   const section = sectionAt(pages, current);
+  const idPage = {};
+  pages.forEach((p, i) => p.blocks?.forEach((b) => { if (!(b.id in idPage)) idPage[b.id] = i; }));
+  const hlItems = Object.entries(highlights).map(([id, text]) => ({ id, text, page: idPage[id] }))
+    .filter((h) => h.page !== undefined).sort((a, b) => a.page - b.page);
+  const isBookmarked = bookmarks.some((b) => b.page === current);
   const safeStart = Math.min(startRef.current, pages.length - 1);
 
   return (
     <QuizProvider>
       <div className="reader" data-testid="reader-container">
         <Toolbar onToc={() => setTocOpen(true)} onPrev={prev} onNext={next} current={current} total={pages.length}
-          mobile={mobile} onPdf={() => setPdf((s) => ({ ...s, open: true }))} sectionTitle={section?.title} />
+          mobile={mobile} onPdf={() => setPdf((s) => ({ ...s, open: true }))} sectionTitle={section?.title}
+          hlMode={hlMode} onHl={() => { setHlMode(!hlMode); toast(hlMode ? "Mode stabilo nonaktif" : "Mode stabilo aktif — ketuk paragraf untuk menandai"); }}
+          bookmarked={isBookmarked} onBookmark={() => toggleBookmark(current, section?.title || "Sampul")}
+          sound={sound} onSound={() => setSound(!sound)} />
         <main className="stage" data-testid="book-canvas">
           <div className="book-shadow" style={{ width: mobile ? pw : pw * 2, height: ph }}>
             <HTMLFlipBook
@@ -115,14 +129,15 @@ export default function Reader() {
               flippingTime={850} mobileScrollSupport startPage={safeStart} startZIndex={0}
               autoSize={false} clickEventForward useMouseEvents swipeDistance={30} showPageCorners
               disableFlipByClick={false} className="flipbook" style={{}}
-              onFlip={(e) => setCurrent(e.data)}
+              onFlip={(e) => { setCurrent(e.data); if (soundRef.current) playFlipSound(); }}
             >
               {children}
             </HTMLFlipBook>
           </div>
           <p className="stage-hint">{mobile ? "Geser untuk membalik halaman" : "Klik sudut halaman atau gunakan tombol panah ← →"}</p>
         </main>
-        <TocSidebar open={tocOpen} onOpenChange={setTocOpen} items={toc.items} activeKey={section?.key} onJump={jump} />
+        <TocSidebar open={tocOpen} onOpenChange={setTocOpen} items={toc.items} activeKey={section?.key} onJump={jump}
+          bookmarks={bookmarks} onRemoveBookmark={(b) => toggleBookmark(b.page, b.label)} highlights={hlItems} />
         <PdfModal open={pdf.open} busy={pdf.busy} progress={pdf.progress} total={pages.length}
           onOpenChange={(open) => setPdf((s) => ({ ...s, open }))} onStart={startPdf} />
         {pdf.busy && createPortal(
