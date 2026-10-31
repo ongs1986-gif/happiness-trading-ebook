@@ -139,7 +139,7 @@ function ChapterPage({ page }) {
       <div className="ch-num">{String(s.chapter_number).padStart(2, "0")}</div>
       <h2 className="ch-title">{s.title}</h2>
       <div className="ch-rule" />
-      {s.illustration && <img className="ch-illus" src={assetUrl(s.illustration)} alt={s.title} crossOrigin="anonymous" loading="lazy" />}
+      {s.illustration && <img className="ch-illus" src={assetUrl(s.illustration)} alt={s.title} crossOrigin="anonymous" />}
     </div>
   );
 }
