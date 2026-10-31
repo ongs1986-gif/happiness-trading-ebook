@@ -1,0 +1,236 @@
+{
+  "project_name": "Happiness Trading — E-Book Reader Web App",
+  "book_details": {
+    "title": "Happiness Trading",
+    "author": "Ongah Hermanto",
+    "language": "Indonesian",
+    "format": "Interactive E-Book Web App with Page Flip Reader (react-pageflip) & PDF Exporter (A5)",
+    "parts_structure": [
+      {
+        "part_id": 1,
+        "title": "Bagian 1: Mengenal Diri Sendiri Sebagai Trader",
+        "description": "Menemukan gaya trading, mengenal bias psikologis, dan membentuk mindset dasar seorang trader.",
+        "chapters": [
+          "Bab 1: Siapa Anda di Depan Chart?",
+          "Bab 2: Mengenali Karakter & Toleransi Risiko",
+          "Bab 3: Jebakan Ego dalam Keputusan Trading",
+          "Bab 4: Ekspektasi vs Realitas Pasar"
+        ]
+      },
+      {
+        "part_id": 2,
+        "title": "Bagian 2: Mengelola Emosi dalam Trading",
+        "description": "Menghadapi FOMO, Greed, Fear, Loss Aversion, dan menjaga kedamaian mental saat fluktuasi harga.",
+        "chapters": [
+          "Bab 5: Menguasai Fear & Greed",
+          "Bab 6: Mengatasi Fear of Missing Out (FOMO)",
+          "Bab 7: Seni Menerima Cut Loss Tanpa Penyesalan",
+          "Bab 8: Menjaga Ketenangan di Tengah Volatilitas"
+        ]
+      },
+      {
+        "part_id": 3,
+        "title": "Bagian 3: Mindfulness & Kesadaran Penuh",
+        "description": "Penerapan teknik kesadaran penuh (mindfulness), pernapasan, dan meditatif dalam aktivitas trading harian.",
+        "chapters": [
+          "Bab 9: Konsep Mindful Trading dalam Praktik",
+          "Bab 10: Jeda Sebelum Eksekusi Order",
+          "Bab 11: Meditasi Singkat untuk Fokus & Kejelasan",
+          "Bab 12: Menghubungkan Pikiran, Tubuh, dan Pergerakan Candlestick"
+        ]
+      },
+      {
+        "part_id": 4,
+        "title": "Bagian 4: Membangun Sistem & Disiplin",
+        "description": "Membuat Trading Plan, Manajemen Risiko (Risk Management), Jurnal Trading, dan Rutin Harian.",
+        "chapters": [
+          "Bab 13: Merancang Trading Plan yang Berkelanjutan",
+          "Bab 14: Manajemen Risiko: Kunci Bertahan Hidup",
+          "Bab 15: Jurnal Trading sebagai Cermin Diri",
+          "Bab 16: Disiplin Tanpa Kompromi"
+        ]
+      },
+      {
+        "part_id": 5,
+        "title": "Bagian 5: Trading for Fun, Not for Living",
+        "description": "Mengubah filosofi trading dari beban hidup menjadi permainan penuh kebahagiaan dan kebebasan finansial.",
+        "chapters": [
+          "Bab 17: Filosofi Trading for Fun",
+          "Bab 18: Melepaskan Beban Finansial Utama dari Trading",
+          "Bab 19: Menemukan Kebahagiaan Sejati dalam Proses",
+          "Bab 20: Menjadi Trader yang Berkelanjutan & Bahagia"
+        ]
+      }
+    ],
+    "front_matter": [
+      "Halaman Judul (Title Page)",
+      "Persembahan (Dedication)",
+      "Ucapan Terima Kasih (Acknowledgements)",
+      "Kata Pengantar (Foreword)",
+      "Pendahuluan (Introduction)"
+    ],
+    "back_matter": [
+      "Penutup (Epilogue / Conclusion)",
+      "Profil Penulis (Author Profile: Ongah Hermanto)",
+      "Back Cover (Sampul Belakang)"
+    ]
+  },
+  "aesthetic_archetype": {
+    "name": "Editorial Warm Analog & Mindful Candlestick",
+    "theme_feel": "Warm ivory book paper aesthetic combined with subtle editorial graphic arts and refined Japanese zen/candlestick motifs. Evokes peace, financial clarity, and thoughtful reading.",
+    "color_palette": {
+      "bg_primary_ivory": "#FDFBF7",
+      "bg_secondary_cream": "#F7F3E9",
+      "bg_paper_texture": "#FAF7EE",
+      "text_dark_charcoal": "#2C2A29",
+      "text_muted_taupe": "#65605A",
+      "border_soft_warm": "#E8E2D5",
+      "accent_candlestick_red": "#C84B4B",
+      "accent_candlestick_red_subtle": "#F9ECEC",
+      "accent_candlestick_green": "#3B8258",
+      "accent_candlestick_green_subtle": "#EEF6F1",
+      "gold_editorial": "#C59B27",
+      "sidebar_bg": "#F5F1E6",
+      "shadow_book_page": "rgba(44, 42, 41, 0.08)"
+    }
+  },
+  "typography": {
+    "font_pairs": {
+      "chapter_titles_serif": "'Playfair Display', 'Lora', Georgia, serif",
+      "subheadings_sans": "'Montserrat', sans-serif",
+      "body_text": "'Inter', 'Montserrat', -apple-system, sans-serif"
+    },
+    "hierarchy_scale": {
+      "cover_title": "text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#2C2A29] leading-tight font-serif",
+      "h1_chapter_title": "text-3xl sm:text-4xl lg:text-5xl font-bold text-[#2C2A29] leading-tight font-serif mb-4",
+      "h2_part_title": "text-2xl sm:text-3xl font-semibold text-[#2C2A29] tracking-wide uppercase font-sans mb-3",
+      "h3_section_title": "text-xl sm:text-2xl font-semibold text-[#2C2A29] font-sans mb-2",
+      "body_text": "text-base sm:text-lg leading-relaxed text-[#2C2A29] font-sans tracking-normal font-normal",
+      "caption_labels": "text-xs uppercase tracking-widest text-[#65605A] font-medium"
+    }
+  },
+  "layout_and_components": {
+    "desktop": "Two-page spread (Book style, 2 side-by-side pages on screens >= 1024px) with realistic center shadow spine and page-turn animation.",
+    "mobile": "Single page view (Responsive flip book mode on screens < 1024px).",
+    "top_toolbar": {
+      "description": "Sticky top bar over book canvas with ivory backdrop blur, border-b border-[#E8E2D5]",
+      "items": [
+        "TOC Sidebar Toggle Button (data-testid='btn-toggle-toc')",
+        "Prev Page Button (data-testid='btn-prev-page')",
+        "Page Indicator Pill / Dropdown e.g., 'Halaman 12 dari 84' (data-testid='page-indicator')",
+        "Next Page Button (data-testid='btn-next-page')",
+        "Font Size Adjuster (data-testid='btn-font-size')",
+        "Bookmark Current Page Toggle (data-testid='btn-bookmark')",
+        "Download PDF Button (A5 format generator/download) (data-testid='btn-download-pdf')",
+        "Search Keyword Modal Trigger (data-testid='btn-search-book')"
+      ]
+    },
+    "toc_sidebar": {
+      "description": "Collapsible interactive Table of Contents drawer/sidebar with search filter, progress indicators, part collapsibles, and clickable jump links to any chapter or section.",
+      "items": [
+        "Search input for TOC items (data-testid='toc-search-input')",
+        "Front Matter Links (Judul, Persembahan, Kata Pengantar, Pendahuluan)",
+        "Parts 1 to 5 Accordion List with Chapter status (Completed/Current)",
+        "Quizzes per part direct links",
+        "Back Matter Links (Penutup, Profil Penulis, Back Cover)"
+      ]
+    },
+    "book_page_canvas": {
+      "rules": [
+        "Each Chapter MUST start on a Right Page in two-page spread mode.",
+        "Page numbers displayed cleanly at the bottom center or outer margins.",
+        "Generous margins (p-8 to p-12 inside page container) to avoid text collision.",
+        "Realistic page shadows and smooth flip transitions using react-pageflip.",
+        "Reflective editorial symbolic illustrations at each Chapter Opener page."
+      ]
+    },
+    "interactive_quiz_system": {
+      "description": "Interactive multiple choice evaluation quizzes at the end of each of the 5 Parts.",
+      "features": [
+        "Instant score calculation & explanation of answers",
+        "State saved locally via localStorage (data-testid='quiz-option-x', data-testid='quiz-submit-button')",
+        "Mindset reflection scorecard upon finishing each quiz",
+        "Retake quiz option"
+      ]
+    },
+    "download_pdf_feature": {
+      "description": "Generates or downloads complete formatted A5 PDF version of 'Happiness Trading' with chapters, illustrations, and reader notes.",
+      "implementation": "Uses browser print/html2pdf/jspdf clean print view layout in standard A5 proportions."
+    }
+  },
+  "image_urls": {
+    "book_front_cover": "https://images.unsplash.com/photo-1519764340700-3db40311f21e?crop=entropy&cs=srgb&fm=jpg&q=85",
+    "book_back_cover": "https://images.unsplash.com/photo-1526050071463-2c476b162a4c?crop=entropy&cs=srgb&fm=jpg&q=85",
+    "author_portrait": "https://images.unsplash.com/photo-1792824242439-e3fd41b4c420?crop=entropy&cs=srgb&fm=jpg&q=85",
+    "chapter_illustrations": [
+      {
+        "chapter": "Part 1 - Mindset & Self Awareness",
+        "url": "https://images.unsplash.com/photo-1706148881913-350e148ca6a6?crop=entropy&cs=srgb&fm=jpg&q=85",
+        "caption": "Simbolisme kesadaran dan keseimbangan batin dalam trading"
+      },
+      {
+        "chapter": "Part 2 - Emotional Control & Candlesticks",
+        "url": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?crop=entropy&cs=srgb&fm=jpg&q=85",
+        "caption": "Refleksi volatilitas pasar dan pengendalian emosi"
+      },
+      {
+        "chapter": "Part 3 - Mindfulness in Execution",
+        "url": "https://images.unsplash.com/photo-1762859718194-7d010a3ccf95?crop=entropy&cs=srgb&fm=jpg&q=85",
+        "caption": "Ketenangan dan kejelasan sebelum mengambil keputusan"
+      },
+      {
+        "chapter": "Part 4 - Discipline & Systems",
+        "url": "https://images.unsplash.com/photo-1576119405683-9efc784a23c5?crop=entropy&cs=srgb&fm=jpg&q=85",
+        "caption": "Struktur dan disiplin konsisten dalam trading journal"
+      },
+      {
+        "chapter": "Part 5 - Trading for Fun",
+        "url": "https://images.unsplash.com/photo-1589966837864-2ec85db4b225?crop=entropy&cs=srgb&fm=jpg&q=85",
+        "caption": "Kebebasan dan kebahagiaan sejati seorang trader"
+      }
+    ]
+  },
+  "testing_and_data_attributes": {
+    "mandatory_data_testids": [
+      "reader-container",
+      "book-canvas",
+      "top-toolbar",
+      "btn-toggle-toc",
+      "btn-prev-page",
+      "btn-next-page",
+      "page-indicator",
+      "btn-download-pdf",
+      "btn-bookmark",
+      "btn-font-size",
+      "btn-search-book",
+      "toc-sidebar",
+      "toc-search-input",
+      "toc-item-front-matter",
+      "toc-item-part-1",
+      "toc-item-part-2",
+      "toc-item-part-3",
+      "toc-item-part-4",
+      "toc-item-part-5",
+      "toc-item-back-matter",
+      "quiz-container-part-1",
+      "quiz-container-part-2",
+      "quiz-container-part-3",
+      "quiz-container-part-4",
+      "quiz-container-part-5",
+      "quiz-option-button",
+      "quiz-submit-button",
+      "author-profile-card",
+      "pdf-download-modal"
+    ]
+  },
+  "instructions_to_main_agent": [
+    "Use react-pageflip for the page turn engine. Ensure HTML elements inside pages are formatted cleanly as A5 proportions.",
+    "Implement two-page spread for desktop views (>= 1024px) and single page flip view for mobile devices (< 1024px).",
+    "Ensure every major Part Chapter starting page begins on a RIGHT-hand page in 2-page spread mode by inserting blank/opener buffer pages if needed.",
+    "The 20 chapters across 5 parts plus front matter and back matter should all be jumpable via the TOC sidebar.",
+    "Quizzes per part must save user selections in localStorage and show immediate feedback score card.",
+    "PDF exporter must create an A5 styled printable/downloadable PDF document containing the book contents.",
+    "Use subtle red (#C84B4B) and green (#3B8258) accents for candlestick theme indicators without overpowering the warm ivory (#FDFBF7) analog book aesthetic.",
+    "All interactive elements must include exact data-testid attributes specified."
+  ]
+}
