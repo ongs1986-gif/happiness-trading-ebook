@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Search, X } from "lucide-react";
+import { Search, StickyNote, X } from "lucide-react";
+import { useReaderState } from "../book/readerState";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "../ui/sheet";
 
 const GROUP_LABEL = { front: "Halaman Awal", back: "Halaman Akhir" };
@@ -30,12 +31,41 @@ function SavedList({ tab, bookmarks, highlights, onJump, onRemoveBookmark }) {
     ));
   }
   if (!highlights.length) return <p className="toc-empty" data-testid="highlights-empty">Belum ada stabilo. Aktifkan mode stabilo di toolbar, lalu ketuk paragraf favorit Anda.</p>;
-  return highlights.map((h) => (
-    <button type="button" key={h.id} className="hl-row" data-testid={`highlight-item-${h.id}`} onClick={() => onJump(h.page)}>
-      <span className="hl-text">“{h.text}{h.text.length >= 160 ? "…" : ""}”</span>
-      <span className="toc-side-num">Hal. {h.page}</span>
-    </button>
-  ));
+  return highlights.map((h) => <HlRow key={h.id} h={h} onJump={onJump} />);
+}
+
+function HlRow({ h, onJump }) {
+  const { notes, setNote } = useReaderState();
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState(notes[h.id] || "");
+  const note = notes[h.id];
+  const save = () => { setNote(h.id, draft); setEditing(false); };
+  return (
+    <div className="hl-row" data-testid={`highlight-item-${h.id}`}>
+      <button type="button" className="hl-jump" data-testid={`highlight-jump-${h.id}`} onClick={() => onJump(h.page)}>
+        <span className="hl-text">“{h.text}{h.text.length >= 160 ? "…" : ""}”</span>
+        <span className="toc-side-num">Hal. {h.page}</span>
+      </button>
+      {editing ? (
+        <div className="hl-note-edit">
+          <textarea data-testid={`note-input-${h.id}`} value={draft} maxLength={500} rows={3} autoFocus
+            placeholder="Tulis catatan pribadi Anda…" onChange={(e) => setDraft(e.target.value)} />
+          <div className="flex gap-2 justify-end">
+            <button type="button" className="hl-note-btn" onClick={() => { setDraft(note || ""); setEditing(false); }}>Batal</button>
+            <button type="button" className="hl-note-btn is-primary" data-testid={`note-save-${h.id}`} onClick={save}>Simpan</button>
+          </div>
+        </div>
+      ) : note ? (
+        <button type="button" className="hl-note" data-testid={`note-text-${h.id}`} onClick={() => setEditing(true)}>
+          <StickyNote size={12} /> <span>{note}</span>
+        </button>
+      ) : (
+        <button type="button" className="hl-note-add" data-testid={`note-add-${h.id}`} onClick={() => setEditing(true)}>
+          <StickyNote size={12} /> Tambah catatan
+        </button>
+      )}
+    </div>
+  );
 }
 
 const TABS = [["toc", "Daftar Isi"], ["bm", "Penanda"], ["hl", "Stabilo"]];

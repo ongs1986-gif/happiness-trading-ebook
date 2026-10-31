@@ -6,6 +6,7 @@ const TOC_PER_PAGE = 17;
 const Q_PER_PAGE = 2;
 const SPLITTABLE = new Set(["p", "quote", "li", "note"]);
 const IMG_H = 238;
+export const AUTHOR_CARD_H = 168;
 
 export function parseContent(text = "") {
   return text.split("\n").filter((l) => l.trim()).map((l) => {
@@ -26,6 +27,7 @@ function makeNode(b) {
   const d = document.createElement("div");
   d.className = blockClass(b);
   if (b.t === "img") d.style.height = `${IMG_H}px`;
+  else if (b.t === "spacer") d.style.height = `${b.h}px`;
   else d.textContent = b.text;
   return d;
 }
@@ -116,6 +118,12 @@ function chunk(arr, n) {
   return out;
 }
 
+export function sectionBlocks(s) {
+  const withIds = (blocks) => blocks.map((b, i) => ({ ...b, id: `${s.key}:${i}` }));
+  if (s.type === "text") return withIds([{ t: "title", text: s.title }, ...parseContent(s.content)]);
+  return withIds(parseContent(s.content));
+}
+
 export function buildBook(sections, measureEl) {
   const pages = [{ kind: "cover" }];
   const starts = {};
@@ -135,6 +143,11 @@ export function buildBook(sections, measureEl) {
       pages.push({ kind: "chapter", section: s });
       const header = `Bab ${s.chapter_number} · ${s.title}`;
       paginate(withIds(parseContent(s.content)), measureEl).forEach((bl) => pages.push({ kind: "text", section: s, blocks: bl, header }));
+    } else if (s.type === "author") {
+      const blocks = [{ t: "spacer", h: AUTHOR_CARD_H, text: "" }, ...withIds(parseContent(s.content))];
+      paginate(blocks, measureEl).forEach((bl, i) => pages.push(i === 0
+        ? { kind: "author", section: s, blocks: bl.slice(1) }
+        : { kind: "text", section: s, blocks: bl, header: s.title }));
     } else if (s.type === "quiz") {
       const ws = s.quiz?.worksheet || [];
       if (ws.length) {

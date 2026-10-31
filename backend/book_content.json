@@ -41,7 +41,7 @@
   "type": "text",
   "title": "Kata Pengantar",
   "group": "front",
-  "content": "[Kata Pengantar belum ada di naskah final. Kirimkan teksnya bila ingin ditambahkan, atau minta halaman ini dihapus.]",
+  "content": "Setiap hari, jutaan keputusan diambil di depan layar trading. Sebagian lahir dari analisis yang matang, sebagian lagi lahir dari rasa takut, keserakahan, atau keinginan untuk segera menebus kerugian. Grafik yang kita lihat mungkin sama, tetapi kondisi batin di balik setiap keputusan sering kali sangat berbeda.\nBuku ini saya tulis untuk mengajak Anda melihat trading dari sudut yang lebih utuh. Bukan hanya tentang entry, exit, indikator, atau strategi, tetapi juga tentang bagaimana kita mengenal diri sendiri, mengelola emosi, menjaga modal, dan tetap hadir sebagai manusia di tengah pasar yang tidak pernah berhenti bergerak.\nHappiness Trading tersusun dalam lima bagian. Kita akan memulai dari fondasi seorang profesional trader, lalu belajar seni menguasai diri, membaca pasar dengan pikiran yang jernih, memahami matematika kedamaian batin melalui manajemen risiko, hingga akhirnya menjadi The Happiness Trader yang mampu mengintegrasikan semuanya ke dalam kehidupan sehari-hari.\nDi akhir setiap bagian, Anda akan menemukan quiz dan lembar praktik. Isilah dengan jujur. Tidak ada jawaban yang benar atau salah, karena tujuannya bukan untuk menilai, melainkan untuk membantu Anda melihat pola yang selama ini mungkin tidak disadari.\nSaya tidak menjanjikan bahwa buku ini akan membuat Anda selalu profit. Market tetap memiliki risiko, dan kerugian tetap menjadi bagian dari perjalanan. Namun saya percaya, trader yang lebih sadar, lebih disiplin, dan lebih tenang akan memiliki peluang yang jauh lebih baik untuk bertahan dan bertumbuh dalam jangka panjang.\nTerima kasih telah memilih untuk berjalan bersama saya melalui halaman-halaman ini. Semoga buku ini menjadi teman yang menenangkan, pengingat yang jujur, dan panduan yang membantu Anda menemukan kebahagiaan dalam proses.\n~ Salam hangat,\\nOngah Hermanto",
   "start_right": true,
   "order": 4
  },
@@ -414,9 +414,9 @@
  {
   "key": "bagian-3",
   "type": "part",
-  "title": "Teknikal dan Delegasi Smart Trading",
+  "title": "Membaca Pasar dengan Pikiran Jernih",
   "part_number": 3,
-  "content": "Kebisingan vs sinyal, price action, makroekonomi, sistem yang cocok, dan peran teknologi.",
+  "content": "Kebisingan vs sinyal, price action, makroekonomi, sistem yang sesuai kepribadian, dan peran teknologi sebagai karyawan digital.",
   "group": "part-3",
   "start_right": true,
   "order": 20
@@ -912,7 +912,7 @@
   "title": "Profil Penulis",
   "group": "back",
   "start_right": false,
-  "content": "Ongah Hermanto adalah pendiri A Trader Hub Indonesia, sebuah ekosistem edukasi dan pendampingan bagi trader. Dalam perjalanannya, ia bertemu dengan banyak orang yang datang ke dunia trading dengan harapan besar, lalu belajar bahwa persoalan trading sering kali bukan hanya soal market, tetapi juga soal pikiran dan cara kita hadir dalam proses.\nIa juga belajar Neuro-Linguistic Programming (NLP) dan pendekatan pengembangan diri lainnya, yang kemudian ia rangkum menjadi latihan reflektif seperti Metode MINS dalam buku ini.\nMelalui Happiness Trading, ia mengajak trader menjalani trading dengan lebih sadar, lebih terukur, dan lebih bahagia — Happy Trade. Happy Mind. Happier Life.\n[Biodata lengkap & foto penulis menunggu kiriman dari Anda.]",
+  "content": "Ongah Hermanto adalah pendiri A Trader Hub Indonesia, sebuah ekosistem edukasi dan pendampingan trading yang lahir dari keinginan untuk menghadirkan edukasi trading yang lebih bermartabat di Indonesia.\n## Perjalanan\nDalam perjalanannya sebagai trader dan pendidik, Ongah bertemu dengan banyak orang yang masuk ke dunia trading dengan harapan besar: ingin bebas finansial, ingin mengubah hidup, ingin membuktikan diri. Namun ia juga menyaksikan bagaimana banyak dari mereka kelelahan secara mental, kehilangan ketenangan, dan menjadikan trading sebagai sumber tekanan baru.\nDari pengalaman, pengamatan, dan perenungan itulah lahir sebuah keyakinan: persoalan dalam trading sering kali bukan hanya soal market, tetapi juga soal pikiran, emosi, dan cara kita hadir di dalam proses.\n## Pendekatan\nOngah memadukan praktik trading profesional dengan pembelajaran pengembangan diri. Ia belajar Neuro-Linguistic Programming (NLP), mendalami pola pikir bisnis dan sistem, serta terinspirasi oleh pendekatan kesadaran dan kinerja pikiran. Perpaduan inilah yang kemudian ia rangkum menjadi latihan reflektif seperti Metode MINS di dalam buku ini.\nBaginya, trading yang sehat adalah trading yang dijalani sebagai bisnis: dengan rencana, SOP, manajemen risiko, jurnal, dan pemanfaatan teknologi secara bijak — tanpa kehilangan kehidupan di luar layar.\n## Nilai yang Dipegang\nOngah memegang prinsip sederhana yang ia pelajari dari para gurunya: Family is Number One. Keluarga adalah tempat pulang dan pengingat bahwa kebahagiaan sejati tidak hanya dicari di pasar, tetapi dijaga di dalam hati dan rumah sendiri.\nMelalui Happiness Trading, karya yang lahir dengan restu sang ibu, ia mengajak setiap trader untuk menjalani trading dengan lebih sadar, lebih terukur, dan lebih bahagia.\n> Happy Trade. Happy Mind. Happier Life.",
   "order": 38
  }
 ]

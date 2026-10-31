@@ -15,7 +15,7 @@ NO_HEADING = {219}
 PARTS = [
     dict(n=1, title="Persiapan Menjadi Seorang Profesional Trader", desc="Pondasi Awal"),
     dict(n=2, title="Seni Menguasai Diri", desc="Filosofi Utama: Trading For Fun, Not For Living"),
-    dict(n=3, title="Teknikal dan Delegasi Smart Trading", desc="Kebisingan vs sinyal, price action, makroekonomi, sistem yang cocok, dan peran teknologi."),
+    dict(n=3, title="Membaca Pasar dengan Pikiran Jernih", desc="Kebisingan vs sinyal, price action, makroekonomi, sistem yang sesuai kepribadian, dan peran teknologi sebagai karyawan digital."),
     dict(n=4, title="Matematika Kedamaian Batin", desc="Capital preservation, position sizing, dan menghadapi drawdown dengan tenang."),
     dict(n=5, title="Menjadi “The Happiness Trader”", desc="Rutinitas sehat, jurnal sebagai cermin diri, dan integrasi menjadi sistem hidup trading."),
 ]
@@ -210,8 +210,15 @@ def build(path):
     add(key="persembahan", type="text", variant="verse", title="Persembahan", group="front", content=verse(P, 1, 3, per_paragraph=True))
     add(key="daftar-isi", type="toc", title="Daftar Isi", group="front")
     add(key="ucapan-terima-kasih", type="text", title="Ucapan Terima Kasih", group="front", content="\n".join([verse(P, 6, 7, True), body_lines(P, 8, 15), verse(P, 16, 16)]))
-    add(key="kata-pengantar", type="text", title="Kata Pengantar", group="front",
-        content="[Kata Pengantar belum ada di naskah final. Kirimkan teksnya bila ingin ditambahkan, atau minta halaman ini dihapus.]")
+    add(key="kata-pengantar", type="text", title="Kata Pengantar", group="front", content="\n".join([
+        "Setiap hari, jutaan keputusan diambil di depan layar trading. Sebagian lahir dari analisis yang matang, sebagian lagi lahir dari rasa takut, keserakahan, atau keinginan untuk segera menebus kerugian. Grafik yang kita lihat mungkin sama, tetapi kondisi batin di balik setiap keputusan sering kali sangat berbeda.",
+        "Buku ini saya tulis untuk mengajak Anda melihat trading dari sudut yang lebih utuh. Bukan hanya tentang entry, exit, indikator, atau strategi, tetapi juga tentang bagaimana kita mengenal diri sendiri, mengelola emosi, menjaga modal, dan tetap hadir sebagai manusia di tengah pasar yang tidak pernah berhenti bergerak.",
+        "Happiness Trading tersusun dalam lima bagian. Kita akan memulai dari fondasi seorang profesional trader, lalu belajar seni menguasai diri, membaca pasar dengan pikiran yang jernih, memahami matematika kedamaian batin melalui manajemen risiko, hingga akhirnya menjadi The Happiness Trader yang mampu mengintegrasikan semuanya ke dalam kehidupan sehari-hari.",
+        "Di akhir setiap bagian, Anda akan menemukan quiz dan lembar praktik. Isilah dengan jujur. Tidak ada jawaban yang benar atau salah, karena tujuannya bukan untuk menilai, melainkan untuk membantu Anda melihat pola yang selama ini mungkin tidak disadari.",
+        "Saya tidak menjanjikan bahwa buku ini akan membuat Anda selalu profit. Market tetap memiliki risiko, dan kerugian tetap menjadi bagian dari perjalanan. Namun saya percaya, trader yang lebih sadar, lebih disiplin, dan lebih tenang akan memiliki peluang yang jauh lebih baik untuk bertahan dan bertumbuh dalam jangka panjang.",
+        "Terima kasih telah memilih untuk berjalan bersama saya melalui halaman-halaman ini. Semoga buku ini menjadi teman yang menenangkan, pengingat yang jujur, dan panduan yang membantu Anda menemukan kebahagiaan dalam proses.",
+        "~ Salam hangat,\\nOngah Hermanto",
+    ]))
     add(key="pendahuluan", type="text", title="Pendahuluan", group="front", content=body_lines(P, 21, 28))
 
     for part in PARTS:
@@ -234,10 +241,17 @@ def build(path):
     add(key="kesimpulan", type="text", variant="verse", title="Kesimpulan", group="back", content=verse(P, 1104, 1135))
     add(key="profil-penulis", type="author", title="Profil Penulis", group="back", start_right=False,
         content="\n".join([
-            "Ongah Hermanto adalah pendiri A Trader Hub Indonesia, sebuah ekosistem edukasi dan pendampingan bagi trader. Dalam perjalanannya, ia bertemu dengan banyak orang yang datang ke dunia trading dengan harapan besar, lalu belajar bahwa persoalan trading sering kali bukan hanya soal market, tetapi juga soal pikiran dan cara kita hadir dalam proses.",
-            "Ia juga belajar Neuro-Linguistic Programming (NLP) dan pendekatan pengembangan diri lainnya, yang kemudian ia rangkum menjadi latihan reflektif seperti Metode MINS dalam buku ini.",
-            "Melalui Happiness Trading, ia mengajak trader menjalani trading dengan lebih sadar, lebih terukur, dan lebih bahagia — Happy Trade. Happy Mind. Happier Life.",
-            "[Biodata lengkap & foto penulis menunggu kiriman dari Anda.]",
+            "Ongah Hermanto adalah pendiri A Trader Hub Indonesia, sebuah ekosistem edukasi dan pendampingan trading yang lahir dari keinginan untuk menghadirkan edukasi trading yang lebih bermartabat di Indonesia.",
+            "## Perjalanan",
+            "Dalam perjalanannya sebagai trader dan pendidik, Ongah bertemu dengan banyak orang yang masuk ke dunia trading dengan harapan besar: ingin bebas finansial, ingin mengubah hidup, ingin membuktikan diri. Namun ia juga menyaksikan bagaimana banyak dari mereka kelelahan secara mental, kehilangan ketenangan, dan menjadikan trading sebagai sumber tekanan baru.",
+            "Dari pengalaman, pengamatan, dan perenungan itulah lahir sebuah keyakinan: persoalan dalam trading sering kali bukan hanya soal market, tetapi juga soal pikiran, emosi, dan cara kita hadir di dalam proses.",
+            "## Pendekatan",
+            "Ongah memadukan praktik trading profesional dengan pembelajaran pengembangan diri. Ia belajar Neuro-Linguistic Programming (NLP), mendalami pola pikir bisnis dan sistem, serta terinspirasi oleh pendekatan kesadaran dan kinerja pikiran. Perpaduan inilah yang kemudian ia rangkum menjadi latihan reflektif seperti Metode MINS di dalam buku ini.",
+            "Baginya, trading yang sehat adalah trading yang dijalani sebagai bisnis: dengan rencana, SOP, manajemen risiko, jurnal, dan pemanfaatan teknologi secara bijak — tanpa kehilangan kehidupan di luar layar.",
+            "## Nilai yang Dipegang",
+            "Ongah memegang prinsip sederhana yang ia pelajari dari para gurunya: Family is Number One. Keluarga adalah tempat pulang dan pengingat bahwa kebahagiaan sejati tidak hanya dicari di pasar, tetapi dijaga di dalam hati dan rumah sendiri.",
+            "Melalui Happiness Trading, karya yang lahir dengan restu sang ibu, ia mengajak setiap trader untuk menjalani trading dengan lebih sadar, lebih terukur, dan lebih bahagia.",
+            "> Happy Trade. Happy Mind. Happier Life.",
         ]))
     return s
 

@@ -231,6 +231,60 @@
 .print-root { position: fixed; left: 0; top: 0; z-index: -10; pointer-events: none; }
 .print-root .pg { box-shadow: none; }
 
+/* Reading mode (single column, larger text) */
+.rv-stage { flex: 1; position: relative; z-index: 1; padding: 28px 16px 80px; }
+.reading-view { max-width: 680px; margin: 0 auto; background: var(--ivory); border: 1px solid var(--line); border-radius: 6px; box-shadow: 0 20px 40px -24px rgba(44, 42, 41, .25); padding: 36px clamp(20px, 5vw, 56px) 56px; }
+.rv-cover { width: min(320px, 80%); display: block; margin: 0 auto 40px; border-radius: 4px; box-shadow: 0 18px 30px -16px rgba(0, 0, 0, .35); }
+.rv-section { scroll-margin-top: 80px; padding-top: 12px; }
+.rv-section + .rv-section { border-top: 1px solid var(--line); margin-top: 28px; padding-top: 32px; }
+.rv-card { position: relative; margin-bottom: 18px; }
+.rv-card .pg-pad, .rv-card .page-body, .rv-card .back2 { position: static; inset: auto; width: auto; height: auto; overflow: visible; padding: 0; }
+.rv-card .part-candles { position: static; width: 60%; margin-top: 16px; }
+.rv-card .part-page { background: transparent; }
+.rv-card .ch-illus { flex: none; width: 100%; aspect-ratio: 1; max-height: 420px; }
+.rv-card .tp-pub { position: static; margin-top: 18px; }
+.rv-title .title-page { padding: 24px 0; }
+.rv-back { background: #EFEFED; border-radius: 6px; padding: 28px 24px; margin-top: 40px; }
+.rv-back .back2 { gap: 24px; }
+.rv-card .author-card { height: auto !important; }
+.reading-view .page-body, .reading-view .rv-text { font-size: 17px; line-height: 1.8; }
+.reading-view .blk { margin-bottom: 14px; }
+.reading-view .blk-p { text-align: left; }
+.reading-view .blk-title { font-size: 34px; }
+.reading-view .blk-h2 { font-size: 18px; margin-top: 26px; }
+.reading-view .blk-h3 { font-size: 16px; }
+.reading-view .blk-quote { font-size: 20px; }
+.reading-view .blk-verse { font-size: 18px; }
+.reading-view .blk-img { height: auto; }
+.reading-view .blk-img img { height: auto; }
+.reading-view .ch-title { font-size: 34px; }
+.reading-view .ch-sub { font-size: 15px; }
+.reading-view .quiz-q-text, .reading-view .ws-label, .reading-view .reflect-prompt { font-size: 15px; }
+.reading-view .quiz-opt, .reading-view .ws-check, .reading-view .ws-p { font-size: 14.5px; }
+.reading-view .ws-title-h, .reading-view .quiz-title { font-size: 30px; }
+.reading-view .ws-h { font-size: 16px; }
+.reading-view .reflect-input { font-size: 15px; }
+@media (max-width: 640px) {
+  .rv-stage { padding: 12px 8px 60px; }
+  .reading-view { padding: 24px 18px 44px; }
+  .reading-view .page-body, .reading-view .rv-text { font-size: 16.5px; }
+}
+
+/* Notes */
+.blk-noted { position: relative; }
+.blk-noted::after { content: ""; position: absolute; right: 0; top: -3px; width: 6px; height: 6px; border-radius: 999px; background: var(--red); }
+.hl-jump { display: flex; flex-direction: column; gap: 4px; width: 100%; text-align: left; }
+.hl-note, .hl-note-add { margin-top: 8px; display: flex; align-items: flex-start; gap: 6px; width: 100%; text-align: left; font-size: 12.5px; line-height: 1.5; color: var(--charcoal); }
+.hl-note { background: var(--ivory); border: 1px solid var(--line); border-radius: 8px; padding: 7px 9px; }
+.hl-note svg, .hl-note-add svg { flex: none; margin-top: 3px; color: var(--red); }
+.hl-note-add { color: var(--taupe); font-family: Montserrat, sans-serif; font-weight: 600; font-size: 11px; }
+.hl-note-add:hover { color: var(--charcoal); }
+.hl-note-edit { margin-top: 8px; display: flex; flex-direction: column; gap: 6px; }
+.hl-note-edit textarea { width: 100%; resize: vertical; border: 1px solid var(--line); border-radius: 8px; padding: 8px; font-size: 13px; background: #fff; outline: none; }
+.hl-note-edit textarea:focus { border-color: var(--green); }
+.hl-note-btn { font-family: Montserrat, sans-serif; font-weight: 600; font-size: 11px; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--line); background: #fff; }
+.hl-note-btn.is-primary { background: var(--charcoal); color: var(--ivory); border-color: var(--charcoal); }
+
 /* Manuscript blocks */
 .blk-h3 { font-family: Montserrat, sans-serif; font-weight: 600; font-size: 12px; margin: 12px 0 5px; color: #3d3a38; }
 .blk-img { margin: 6px 0 14px; height: 238px; }

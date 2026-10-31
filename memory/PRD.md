@@ -28,6 +28,13 @@ Personal web e-book reader for "Happiness Trading" by Ongah Hermanto: realistic 
 - Author profile from facts in manuscript; photo/full bio pending
 - Bagian III title not in manuscript -> provisional "Teknikal dan Delegasi Smart Trading"
 
+## Iteration 3 (2026-06)
+- Bagian III title set to "Membaca Pasar dengan Pikiran Jernih" (suggested by agent)
+- Kata Pengantar drafted by agent (not in docx) in author voice; author bio expanded from manuscript facts (no photo, initials)
+- Author profile now flows over multiple pages
+- Personal notes on highlights (Stabilo tab, localStorage ht-notes, red dot marker)
+- Reading mode (single column, larger text), default on screens <1024px, toggle btn-reading-mode
+
 ## Backlog
 - P0: Author bio + photo; confirm Bagian III title; Kata Pengantar text or remove
 - P1: Better mobile legibility (text ~10px at 390px); hide blank versos on mobile

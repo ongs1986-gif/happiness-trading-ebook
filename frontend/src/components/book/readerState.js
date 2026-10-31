@@ -6,9 +6,16 @@ const load = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) ?? d; 
 
 export function ReaderStateProvider({ children }) {
   const [highlights, setHighlights] = useState(() => load("ht-hl", {}));
+  const [notes, setNotes] = useState(() => load("ht-notes", {}));
   const [bookmarks, setBookmarks] = useState(() => load("ht-bm", []));
   const [hlMode, setHlMode] = useState(false);
   useEffect(() => { localStorage.setItem("ht-hl", JSON.stringify(highlights)); }, [highlights]);
+  useEffect(() => { localStorage.setItem("ht-notes", JSON.stringify(notes)); }, [notes]);
+  const setNote = (id, text) => setNotes((n) => {
+    const next = { ...n };
+    if (text.trim()) next[id] = text; else delete next[id];
+    return next;
+  });
   useEffect(() => { localStorage.setItem("ht-bm", JSON.stringify(bookmarks)); }, [bookmarks]);
   useEffect(() => { document.body.dataset.hlmode = hlMode ? "1" : "0"; }, [hlMode]);
 
@@ -21,7 +28,7 @@ export function ReaderStateProvider({ children }) {
     b.some((x) => x.page === page) ? b.filter((x) => x.page !== page) : [...b, { page, label }].sort((x, y) => x.page - y.page));
 
   return (
-    <ReaderContext.Provider value={{ highlights, toggleHighlight, bookmarks, toggleBookmark, hlMode, setHlMode }}>
+    <ReaderContext.Provider value={{ highlights, toggleHighlight, notes, setNote, bookmarks, toggleBookmark, hlMode, setHlMode }}>
       {children}
     </ReaderContext.Provider>
   );

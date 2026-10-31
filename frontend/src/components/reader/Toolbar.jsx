@@ -1,8 +1,10 @@
-import { Bookmark, BookmarkCheck, ChevronLeft, ChevronRight, Download, Highlighter, List, Volume2, VolumeX } from "lucide-react";
+import { AlignLeft, BookOpen, Bookmark, BookmarkCheck, ChevronLeft, ChevronRight, Download, Highlighter, List, Volume2, VolumeX } from "lucide-react";
 
-function ToolIcons({ hlMode, onHl, bookmarked, onBookmark, sound, onSound }) {
+function ToolIcons({ hlMode, onHl, bookmarked, onBookmark, sound, onSound, readMode, onReadMode }) {
   return (
     <div className="flex items-center gap-1.5">
+      <button type="button" className={`tb-icon ${readMode ? "is-on-bm" : ""}`} data-testid="btn-reading-mode" onClick={onReadMode}
+        aria-label="Mode baca" title={readMode ? "Kembali ke tampilan buku" : "Mode baca (teks besar)"}>{readMode ? <BookOpen size={16} /> : <AlignLeft size={16} />}</button>
       <button type="button" className={`tb-icon ${hlMode ? "is-on-hl" : ""}`} data-testid="btn-highlight-mode" onClick={onHl}
         aria-label="Mode stabilo" title="Mode stabilo"><Highlighter size={16} /></button>
       <button type="button" className={`tb-icon ${bookmarked ? "is-on-bm" : ""}`} data-testid="btn-bookmark" onClick={onBookmark}
@@ -26,12 +28,12 @@ export function Toolbar({ onToc, onPrev, onNext, current, total, mobile, onPdf, 
           <div className="tb-section truncate" data-testid="current-section-title">{sectionTitle || "Ongah Hermanto"}</div>
         </div>
       </div>
-      <div className="flex items-center gap-1.5">
+      <div className={`items-center gap-1.5 ${tools.readMode ? "hidden sm:flex" : "flex"}`}>
         <button type="button" className="tb-icon" data-testid="btn-prev-page" onClick={onPrev} disabled={current <= 0} aria-label="Sebelumnya">
           <ChevronLeft size={18} />
         </button>
         <div className="tb-pill" data-testid="page-indicator">
-          Hal. <b>{label}</b> <span className="opacity-60">/ {total - 1}</span>
+          <span className="hidden sm:inline">Hal. </span><b>{label}</b> <span className="opacity-60 hidden sm:inline">/ {total - 1}</span>
         </div>
         <button type="button" className="tb-icon" data-testid="btn-next-page" onClick={onNext} disabled={current >= total - 1} aria-label="Berikutnya">
           <ChevronRight size={18} />

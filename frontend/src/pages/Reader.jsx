@@ -12,6 +12,7 @@ import { playFlipSound } from "../lib/sound";
 import { Toolbar } from "../components/reader/Toolbar";
 import { TocSidebar } from "../components/reader/TocSidebar";
 import { PdfModal } from "../components/reader/PdfModal";
+import { ReadingView } from "../components/reader/ReadingView";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 const FONTS = ['700 30px "Playfair Display"', 'italic 400 20px "Playfair Display"', '600 13px Montserrat', '400 12.5px Inter', '500 12px Inter'];
@@ -58,6 +59,11 @@ export default function Reader() {
   const [sound, setSound] = useState(() => localStorage.getItem("ht-sound") !== "0");
   const soundRef = useRef(sound);
   useEffect(() => { soundRef.current = sound; localStorage.setItem("ht-sound", sound ? "1" : "0"); }, [sound]);
+  const [readMode, setReadMode] = useState(() => {
+    const v = localStorage.getItem("ht-mode");
+    return v ? v === "read" : window.innerWidth < 1024;
+  });
+  const [readKey, setReadKey] = useState(null);
 
   useEffect(() => { loadBook().then(setData).catch(() => setError(true)); }, []);
   useEffect(() => { localStorage.setItem("ht-page", String(current)); startRef.current = current; }, [current]);
@@ -90,7 +96,32 @@ export default function Reader() {
     return () => window.removeEventListener("keydown", onKey);
   }, [next, prev]);
 
-  const jump = (n) => { setTocOpen(false); setTimeout(() => flip(n), 250); };
+  const jump = (n) => {
+    setTocOpen(false);
+    if (readMode) {
+      const sec = sectionAt(pages, n);
+      setTimeout(() => document.getElementById(`sec-${sec?.key}`)?.scrollIntoView({ behavior: "smooth" }), 250);
+      return;
+    }
+    setTimeout(() => flip(n), 250);
+  };
+  const onReadSection = useCallback((key) => { setReadKey(key); const p = data?.built.starts[key]; if (p !== undefined) setCurrent(p); }, [data]);
+  const secKeys = useMemo(() => data?.book.sections.filter((s) => s.type !== "toc").map((s) => s.key) || [], [data]);
+  const stepSection = (d) => {
+    const i = Math.max(0, secKeys.indexOf(readKey));
+    const k = secKeys[Math.min(secKeys.length - 1, Math.max(0, i + d))];
+    document.getElementById(`sec-${k}`)?.scrollIntoView({ behavior: "smooth" });
+  };
+  const toggleReadMode = () => {
+    const nextMode = !readMode;
+    localStorage.setItem("ht-mode", nextMode ? "read" : "flip");
+    if (!nextMode) startRef.current = current;
+    setReadMode(nextMode);
+    if (nextMode) {
+      const sec = sectionAt(pages, current);
+      setTimeout(() => document.getElementById(`sec-${sec?.key}`)?.scrollIntoView(), 80);
+    }
+  };
 
   const startPdf = async () => {
     setPdf({ open: true, busy: true, progress: 0 });
@@ -108,7 +139,9 @@ export default function Reader() {
   if (error) return <div className="reader-state" data-testid="reader-error">Gagal memuat buku. Muat ulang halaman.</div>;
   if (!data) return <div className="reader-state" data-testid="reader-loading"><div className="loader-candle" />Menyiapkan halaman buku…</div>;
 
-  const section = sectionAt(pages, pages[current]?.kind === "blank" && !mobile ? current + 1 : current);
+  const section = readMode
+    ? data.book.sections.find((s) => s.key === readKey) || sectionAt(pages, current)
+    : sectionAt(pages, pages[current]?.kind === "blank" && !mobile ? current + 1 : current);
   const hlItems = Object.entries(highlights).map(([id, text]) => ({ id, text, page: idPage[id] }))
     .filter((h) => h.page !== undefined).sort((a, b) => a.page - b.page);
   const isBookmarked = bookmarks.some((b) => b.page === current);
@@ -117,11 +150,17 @@ export default function Reader() {
   return (
     <QuizProvider>
       <div className="reader" data-testid="reader-container">
-        <Toolbar onToc={() => setTocOpen(true)} onPrev={prev} onNext={next} current={current} total={pages.length}
+        <Toolbar onToc={() => setTocOpen(true)} onPrev={readMode ? () => stepSection(-1) : prev} onNext={readMode ? () => stepSection(1) : next}
+          current={current} total={pages.length} readMode={readMode} onReadMode={toggleReadMode}
           mobile={mobile} onPdf={() => setPdf((s) => ({ ...s, open: true }))} sectionTitle={section?.title}
           hlMode={hlMode} onHl={() => { setHlMode(!hlMode); toast(hlMode ? "Mode stabilo nonaktif" : "Mode stabilo aktif — ketuk paragraf untuk menandai"); }}
           bookmarked={isBookmarked} onBookmark={() => toggleBookmark(current, section?.title || "Sampul")}
           sound={sound} onSound={() => setSound(!sound)} />
+        {readMode ? (
+          <main className="rv-stage" data-testid="book-canvas-reading">
+            <ReadingView book={data.book} onSection={onReadSection} />
+          </main>
+        ) : (
         <main className="stage" data-testid="book-canvas">
           <div className="book-shadow" style={{ width: mobile ? pw : pw * 2, height: ph }}>
             <HTMLFlipBook
@@ -139,6 +178,7 @@ export default function Reader() {
           </div>
           <p className="stage-hint">{mobile ? "Geser untuk membalik halaman" : "Klik sudut halaman atau gunakan tombol panah ← →"}</p>
         </main>
+        )}
         <TocSidebar open={tocOpen} onOpenChange={setTocOpen} items={toc.items} activeKey={section?.key} onJump={jump}
           bookmarks={bookmarks} onRemoveBookmark={(b) => toggleBookmark(b.page, b.label)} highlights={hlItems} />
         <PdfModal open={pdf.open} busy={pdf.busy} progress={pdf.progress} total={pages.length}

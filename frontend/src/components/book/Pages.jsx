@@ -1,5 +1,5 @@
 import { forwardRef, useEffect, useRef } from "react";
-import { blockClass, parseContent, PAGE_W, PAGE_H } from "../../lib/book";
+import { blockClass, parseContent, PAGE_W, PAGE_H, AUTHOR_CARD_H } from "../../lib/book";
 import { QuizPage, ReflectionPage } from "./QuizPage";
 import { WorksheetPage } from "./WorksheetPage";
 import { useReaderState } from "./readerState";
@@ -59,7 +59,7 @@ export function CandleFace({ happy, size = 46 }) {
   );
 }
 
-function Back({ book }) {
+export function Back({ book }) {
   const m = book.meta;
   return (
     <div className="back2" data-testid="back-cover">
@@ -79,7 +79,7 @@ function Back({ book }) {
   );
 }
 
-function TitlePage({ book }) {
+export function TitlePage({ book }) {
   const m = book.meta;
   return (
     <div className="pg-pad title-page">
@@ -125,12 +125,21 @@ function TocPage({ page, toc }) {
   );
 }
 
-function Block({ b, hl, onToggle }) {
-  const cls = `${blockClass(b)}${hl ? " blk-hl" : ""}`;
+function Block({ b, hl, noted, onToggle }) {
+  const cls = `${blockClass(b)}${hl ? " blk-hl" : ""}${noted ? " blk-noted" : ""}`;
   if (b.t === "img") return <div className={cls}><img src={assetUrl(b.src)} alt="" crossOrigin="anonymous" /></div>;
   return (
     <div className={cls} data-hl-id={b.id} onClick={onToggle ? () => onToggle(b.id, b.text) : undefined}>{b.text}</div>
   );
+}
+
+export function BlockList({ blocks, print }) {
+  const { highlights, notes, toggleHighlight, hlMode } = useReaderState();
+  return blocks.map((b, i) => {
+    const can = b.t !== "img" && b.t !== "spacer" && b.id;
+    return <Block key={i} b={b} hl={can && !!highlights[b.id]} noted={can && !print && !!notes[b.id]}
+      onToggle={hlMode && !print && can ? toggleHighlight : undefined} />;
+  });
 }
 
 // In highlight mode, stop page-flip from reacting so taps toggle highlights instead.
@@ -147,21 +156,19 @@ function useHlStop() {
 }
 
 function TextPage({ page, print }) {
-  const { highlights, toggleHighlight, hlMode } = useReaderState();
+  const { hlMode } = useReaderState();
   const ref = useHlStop();
   return (
     <>
       <div className="pg-header">{page.header}</div>
       <div className={`page-body ${hlMode && !print ? "hl-mode" : ""}`} ref={ref}>
-        {page.blocks.map((b, i) => (
-          <Block key={i} b={b} hl={!!highlights[b.id] && b.t !== "img"} onToggle={hlMode && !print && b.t !== "img" ? toggleHighlight : undefined} />
-        ))}
+        <BlockList blocks={page.blocks} print={print} />
       </div>
     </>
   );
 }
 
-function PartPage({ page }) {
+export function PartPage({ page }) {
   const s = page.section;
   return (
     <div className="pg-pad part-page" data-testid={`part-page-${s.part_number}`}>
@@ -174,7 +181,7 @@ function PartPage({ page }) {
   );
 }
 
-function ChapterPage({ page }) {
+export function ChapterPage({ page }) {
   const s = page.section;
   return (
     <div className="pg-pad chapter-page" data-testid={`chapter-opener-${s.chapter_number}`}>
@@ -188,24 +195,24 @@ function ChapterPage({ page }) {
   );
 }
 
-function AuthorPage({ page, book }) {
-  const blocks = parseContent(page.section.content);
+export function AuthorPage({ page, book, print }) {
   const photo = book.meta.author_photo;
+  const ref = useHlStop();
   return (
-    <div className="pg-pad author-page" data-testid="author-profile-card">
-      <h2 className="blk blk-title">Profil Penulis</h2>
-      <div className="author-head">
-        {photo
-          ? <img className="author-avatar author-photo" src={assetUrl(photo)} alt="Ongah Hermanto" crossOrigin="anonymous" />
-          : <div className="author-avatar">OH</div>}
-        <div>
-          <div className="author-name">Ongah Hermanto</div>
-          <div className="kicker">Penulis · Founder A Trader Hub Indonesia</div>
+    <div className="page-body author-page" data-testid="author-profile-card" ref={ref}>
+      <div className="author-card" style={{ height: AUTHOR_CARD_H, marginBottom: 9 }}>
+        <h2 className="blk blk-title">Profil Penulis</h2>
+        <div className="author-head">
+          {photo
+            ? <img className="author-avatar author-photo" src={assetUrl(photo)} alt="Ongah Hermanto" crossOrigin="anonymous" />
+            : <div className="author-avatar">OH</div>}
+          <div>
+            <div className="author-name">Ongah Hermanto</div>
+            <div className="kicker">Penulis · Founder A Trader Hub Indonesia</div>
+          </div>
         </div>
       </div>
-      <div className="author-bio">
-        {blocks.map((b, i) => <div key={i} className={blockClass(b)}>{b.text}</div>)}
-      </div>
+      <BlockList blocks={page.blocks} print={print} />
     </div>
   );
 }
