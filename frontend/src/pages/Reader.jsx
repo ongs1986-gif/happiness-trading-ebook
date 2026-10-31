@@ -45,7 +45,7 @@ async function loadBook() {
 export default function Reader() {
   const [data, setData] = useState(null);
   const [error, setError] = useState(false);
-  const [current, setCurrent] = useState(() => Number(localStorage.getItem("ht-page") || 0));
+  const [current, setCurrent] = useState(() => Number(localStorage.getItem("ht-page")) || 0);
   const [tocOpen, setTocOpen] = useState(false);
   const [pdf, setPdf] = useState({ open: false, busy: false, progress: 0 });
   const printRef = useRef(null);
