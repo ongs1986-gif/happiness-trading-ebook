@@ -100,7 +100,7 @@ export default function Reader() {
     setTocOpen(false);
     if (readMode) {
       const sec = sectionAt(pages, n);
-      setTimeout(() => document.getElementById(`sec-${sec?.key}`)?.scrollIntoView({ behavior: "smooth" }), 250);
+      setTimeout(() => document.getElementById(`sec-${sec?.key}`)?.scrollIntoView(), 250);
       return;
     }
     setTimeout(() => flip(n), 250);
@@ -115,7 +115,11 @@ export default function Reader() {
   const toggleReadMode = () => {
     const nextMode = !readMode;
     localStorage.setItem("ht-mode", nextMode ? "read" : "flip");
-    if (!nextMode) startRef.current = current;
+    if (!nextMode) {
+      const p = !mobile && current > 0 && current % 2 === 0 ? current - 1 : current;
+      startRef.current = p;
+      setCurrent(p);
+    }
     setReadMode(nextMode);
     if (nextMode) {
       const sec = sectionAt(pages, current);
@@ -141,7 +145,7 @@ export default function Reader() {
 
   const section = readMode
     ? data.book.sections.find((s) => s.key === readKey) || sectionAt(pages, current)
-    : sectionAt(pages, pages[current]?.kind === "blank" && !mobile ? current + 1 : current);
+    : sectionAt(pages, !mobile && current > 0 ? Math.min(current + 1, pages.length - 1) : current);
   const hlItems = Object.entries(highlights).map(([id, text]) => ({ id, text, page: idPage[id] }))
     .filter((h) => h.page !== undefined).sort((a, b) => a.page - b.page);
   const isBookmarked = bookmarks.some((b) => b.page === current);
@@ -152,7 +156,7 @@ export default function Reader() {
       <div className="reader" data-testid="reader-container">
         <Toolbar onToc={() => setTocOpen(true)} onPrev={readMode ? () => stepSection(-1) : prev} onNext={readMode ? () => stepSection(1) : next}
           current={current} total={pages.length} readMode={readMode} onReadMode={toggleReadMode}
-          mobile={mobile} onPdf={() => setPdf((s) => ({ ...s, open: true }))} sectionTitle={section?.title}
+          mobile={mobile || readMode} onPdf={() => setPdf((s) => ({ ...s, open: true }))} sectionTitle={section?.title}
           hlMode={hlMode} onHl={() => { setHlMode(!hlMode); toast(hlMode ? "Mode stabilo nonaktif" : "Mode stabilo aktif — ketuk paragraf untuk menandai"); }}
           bookmarked={isBookmarked} onBookmark={() => toggleBookmark(current, section?.title || "Sampul")}
           sound={sound} onSound={() => setSound(!sound)} />

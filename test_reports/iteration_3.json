@@ -1,0 +1,31 @@
+{
+  "summary": "Frontend-only run focused on this iteration's features; PDF and backend were skipped. All requested flows PASSED. (1) TOC Bagian 3 is titled 'Membaca Pasar dengan Pikiran Jernih'. (2) toc-link-kata-pengantar goes to spread 13-14, and page 14 shows real Kata Pengantar text. (3) toc-link-profil-penulis goes to 195-196: author-profile-card shows the 'OH' avatar with no photo, and the bio continues on 197-198 with the PROFIL PENULIS header. (4) Notes: in highlight mode, clicking bab-1:2 and profil-penulis:0 highlights them without flipping the page. In the sidebar Stabilo tab, note-add, note-input, note-save and note-text all work. The note persists in ht-notes after reload, and the block gets the blk-noted class (also in reading view). Clearing the note removes it. highlight-jump goes to 23-24. (5) Reading mode on desktop: btn-reading-mode shows reading-view and unmounts the flipbook. Body text is 17px. toc-link-bab-5 scrolls #sec-bab-5 to the top. ws-p1-bigwhy accepts input. Quiz options get opt-selected. Highlight toggles blk-hl on and off. Toggling back returns the flipbook to the Bab 8 spread (chapter-opener-8 visible). Mobile 390x844 with cleared storage: reading-view is the default, text is 16.5px, there is no horizontal overflow (scrollWidth 390) and the toolbar fits. Regression: next/prev/arrow keys, bookmark add/list/remove, and the sound toggle (ht-sound 0/1) all work. Section next/prev in reading mode works. No page errors.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "Toolbar page-indicator after leaving reading mode", "issue": "toggleReadMode sets current to the section start page, which is usually an even, right-hand page (e.g. 80 for Bab 8). Pageflip then shows spread 79-80, but onFlip does not fire, so the indicator reads 'Hal. 80–81' and a bookmark would save page 80 instead of the visible spread. Fix: on desktop, normalise current to the left page of the spread (even and >0 -> current-1), or sync current from pageFlip().getCurrentPageIndex() after the flipbook mounts.", "selector": "[data-testid='page-indicator']", "priority": "LOW"},
+      {"component": "Toolbar section title (carried over)", "issue": "On spreads, the subtitle uses the left page's section, e.g. 'Ucapan Terima Kasih' on the Kata Pengantar spread and 'Kesimpulan' on the Profil Penulis spread.", "selector": "[data-testid='current-section-title']", "priority": "LOW"}
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Reading mode", "issues": ["The page indicator still shows a spread range (e.g. 'Hal. 38–39') in reading mode, which means little in a scroll view. Consider showing only the section's start page.", "TOC jumps over long distances on mobile use smooth scroll and take about 3-4s to arrive at the end of the book (e.g. Profil Penulis); behavior 'auto' would feel snappier for long jumps."]}
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Optional: normalise current to the spread's left page when returning from reading mode on desktop (fixes the indicator and bookmark page)",
+    "Optional: derive the toolbar section title from the right page when the left page belongs to a previous section",
+    "Optional: show a single page number in the reading-mode indicator"
+  ],
+  "critical_code_review_comments": [
+    "Reader.jsx toggleReadMode/onReadSection: current is set to built.starts[key] without parity normalisation for spread mode",
+    "Reader.jsx: hlItems is still recomputed on every render (wrap in useMemo)",
+    "TocSidebar HlRow: draft is initialised from notes only on mount; this is fine because the row remounts, but editing the same note from two places is not synced (minor)"
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (skipped)", "frontend": "100% of requested flows"},
+  "seed_data_creation": "none (localStorage only: ht-hl, ht-notes, ht-bm, ht-mode, ht-ws/ht-quiz)",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "There are 200 pages (indicator '/ 199'). Kata Pengantar is p14 and Bab 1 text p23-24 (bab-1:2 on p23). Profil Penulis runs p196-198; p196 has the author card. Bab 8 opener is p80. Toolbar testids: btn-toggle-toc (not btn-toc), btn-reading-mode, btn-highlight-mode, btn-bookmark, btn-sound-toggle, page-indicator, current-section-title. localStorage ht-mode='read'/'flip' overrides the viewport default. In reading mode, sections are #sec-{key}; smooth scroll needs about 2-4s for long jumps."
+}
