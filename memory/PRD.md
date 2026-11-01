@@ -39,6 +39,13 @@ Personal web e-book reader for "Happiness Trading" by Ongah Hermanto: realistic 
 - Font size slider (80–150%) in reading mode, persisted (ht-font)
 - "Lanjut membaca" card on open (book opens on cover); Lanjutkan / Dari awal / X (X keeps saved page)
 
+## Iteration 5 (2026-06) — Collaboration merge
+- `backend/collab_content.py`: first-draft material rewritten to complement the manuscript
+  - "Intisari & Langkah Praktis" box at end of every Bab 1–20 (`%% ` line prefix -> .blk-box)
+  - Pendahuluan + "Cara Membaca Buku Ini"; new "Penutup" section after Kesimpulan
+  - "Refleksi Tambahan" fields in each worksheet; +1 first-draft MC question per Quiz Cepat (4 each)
+- Book now ~222 pages
+
 ## Backlog
 - P0: Author bio + photo; confirm Bagian III title; Kata Pengantar text or remove
 - P1: Better mobile legibility (text ~10px at 390px); hide blank versos on mobile

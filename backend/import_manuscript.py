@@ -6,6 +6,8 @@ from pathlib import Path
 
 import docx
 
+from collab_content import CARA_MEMBACA, PENUTUP, EXTRA_REFLECTIONS, EXTRA_QUIZ, intisari_lines
+
 ROOT = Path(__file__).parent
 END_PUNCT = tuple('.,:;!…"”’')
 HEADING_FORCE = {462}
@@ -219,7 +221,7 @@ def build(path):
         "Terima kasih telah memilih untuk berjalan bersama saya melalui halaman-halaman ini. Semoga buku ini menjadi teman yang menenangkan, pengingat yang jujur, dan panduan yang membantu Anda menemukan kebahagiaan dalam proses.",
         "~ Salam hangat,\\nOngah Hermanto",
     ]))
-    add(key="pendahuluan", type="text", title="Pendahuluan", group="front", content=body_lines(P, 21, 28))
+    add(key="pendahuluan", type="text", title="Pendahuluan", group="front", content="\n".join([body_lines(P, 21, 28), *CARA_MEMBACA]))
 
     for part in PARTS:
         n = part["n"]
@@ -232,13 +234,19 @@ def build(path):
                 continue
             skip = {ti} | ({si} if si else set())
             add(key=f"bab-{ch}", type="chapter", title=clean(P[ti]["text"]), subtitle=clean(P[si]["text"]) if si else None,
-                part_number=n, chapter_number=ch, illustration=illus, content=body_lines(P, a, b, skip), group=f"part-{n}")
+                part_number=n, chapter_number=ch, illustration=illus,
+                content="\n".join([body_lines(P, a, b, skip), *intisari_lines(ch)]), group=f"part-{n}")
         ws = WORKSHEETS[n]
+        items = list(ws["items"])
+        extra = [H("Refleksi Tambahan")] + [F(i, label, 3) for i, label in EXTRA_REFLECTIONS[n]]
+        pos = next((k for k, it in enumerate(items) if it.get("id") == "sign"), len(items))
+        items[pos:pos] = extra
         add(key=f"quiz-{n}", type="quiz", title=ws["title"], subtitle=ws["subtitle"], part_number=n, group=f"part-{n}",
-            quiz={"worksheet": ws["items"],
-                  "questions": [{"q": q, "options": o, "answer": a, "explain": e} for q, o, a, e in QUICK_QUIZ[n]]})
+            quiz={"worksheet": items,
+                  "questions": [{"q": q, "options": o, "answer": a, "explain": e} for q, o, a, e in QUICK_QUIZ[n] + EXTRA_QUIZ[n]]})
 
     add(key="kesimpulan", type="text", variant="verse", title="Kesimpulan", group="back", content=verse(P, 1104, 1135))
+    add(key="penutup", type="text", title="Penutup", group="back", start_right=False, content="\n".join(PENUTUP))
     add(key="profil-penulis", type="author", title="Profil Penulis", group="back", start_right=False,
         content="\n".join([
             "Ongah Hermanto adalah pendiri A Trader Hub Indonesia, sebuah ekosistem edukasi dan pendampingan trading yang lahir dari keinginan untuk menghadirkan edukasi trading yang lebih bermartabat di Indonesia.",

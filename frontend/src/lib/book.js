@@ -10,18 +10,23 @@ export const AUTHOR_CARD_H = 168;
 
 export function parseContent(text = "") {
   return text.split("\n").filter((l) => l.trim()).map((l) => {
-    if (l.startsWith("### ")) return { t: "h3", text: l.slice(4) };
-    if (l.startsWith("## ")) return { t: "h2", text: l.slice(3) };
-    if (l.startsWith("![](")) return { t: "img", src: l.slice(4, -1), text: "" };
-    if (l.startsWith("~ ")) return { t: "verse", text: l.slice(2).split("\\n").join("\n") };
-    if (l.startsWith("> ")) return { t: "quote", text: l.slice(2) };
-    if (l.startsWith("- ")) return { t: "li", text: l.slice(2) };
-    if (l.startsWith("[") && l.endsWith("]")) return { t: "note", text: l };
-    return { t: "p", text: l };
+    if (l.startsWith("%% ")) return { ...parseLine(l.slice(3)), box: true };
+    return parseLine(l);
   });
 }
 
-export const blockClass = (b) => `blk blk-${b.t}${b.cont ? " blk-cont" : ""}`;
+function parseLine(l) {
+  if (l.startsWith("### ")) return { t: "h3", text: l.slice(4) };
+  if (l.startsWith("## ")) return { t: "h2", text: l.slice(3) };
+  if (l.startsWith("![](")) return { t: "img", src: l.slice(4, -1), text: "" };
+  if (l.startsWith("~ ")) return { t: "verse", text: l.slice(2).split("\\n").join("\n") };
+  if (l.startsWith("> ")) return { t: "quote", text: l.slice(2) };
+  if (l.startsWith("- ")) return { t: "li", text: l.slice(2) };
+  if (l.startsWith("[") && l.endsWith("]")) return { t: "note", text: l };
+  return { t: "p", text: l };
+}
+
+export const blockClass = (b) => `blk blk-${b.t}${b.cont ? " blk-cont" : ""}${b.box ? " blk-box" : ""}`;
 
 function makeNode(b) {
   const d = document.createElement("div");

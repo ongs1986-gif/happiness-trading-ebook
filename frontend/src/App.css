@@ -312,6 +312,20 @@
 .hl-note-btn { font-family: Montserrat, sans-serif; font-weight: 600; font-size: 11px; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--line); background: #fff; }
 .hl-note-btn.is-primary { background: var(--charcoal); color: var(--ivory); border-color: var(--charcoal); }
 
+/* Collaboration box: Intisari & Langkah Praktis */
+.blk-box { background: #F3EEE1; margin: 0; padding: 3px 14px 6px; border-left: 3px solid var(--green); }
+.blk-box.blk-h2 { margin-top: 18px; padding-top: 12px; color: var(--green); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; border-radius: 0 6px 0 0; }
+.blk-box.blk-p { text-indent: 0; text-align: left; }
+.blk-box.blk-li { padding-left: 30px; }
+.blk-box.blk-li::before { left: 15px; }
+.blk-box.blk-h3 { margin: 0; padding-top: 8px; font-size: 11px; color: var(--red); }
+.blk-box:last-child { padding-bottom: 12px; border-radius: 0 0 6px 0; }
+.reading-view .blk-box { margin: 0; padding-left: 20px; padding-right: 20px; }
+.reading-view .blk-box.blk-li { padding-left: 38px; }
+.reading-view .blk-box.blk-li::before { left: 22px; }
+.reading-view .blk-box.blk-h2 { font-size: calc(13px * var(--rv-k)); }
+.reading-view .blk-box.blk-h3 { font-size: calc(13px * var(--rv-k)); }
+
 /* Manuscript blocks */
 .blk-h3 { font-family: Montserrat, sans-serif; font-weight: 600; font-size: 12px; margin: 12px 0 5px; color: #3d3a38; }
 .blk-img { margin: 6px 0 14px; height: 238px; }
