@@ -35,6 +35,10 @@ Personal web e-book reader for "Happiness Trading" by Ongah Hermanto: realistic 
 - Personal notes on highlights (Stabilo tab, localStorage ht-notes, red dot marker)
 - Reading mode (single column, larger text), default on screens <1024px, toggle btn-reading-mode
 
+## Iteration 4 (2026-06)
+- Font size slider (80–150%) in reading mode, persisted (ht-font)
+- "Lanjut membaca" card on open (book opens on cover); Lanjutkan / Dari awal / X (X keeps saved page)
+
 ## Backlog
 - P0: Author bio + photo; confirm Bagian III title; Kata Pengantar text or remove
 - P1: Better mobile legibility (text ~10px at 390px); hide blank versos on mobile

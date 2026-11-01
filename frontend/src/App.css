@@ -259,7 +259,9 @@
 .reading-view .blk-note { font-size: calc(13px * var(--rv-k)); }
 .reading-view .blk-img { height: auto; }
 .reading-view .blk-img img { height: auto; }
-.reading-view .ch-title { font-size: calc(34px * var(--rv-k)); }
+.reading-view .ch-title { font-size: min(calc(34px * var(--rv-k)), 10vw); overflow-wrap: anywhere; }
+.reading-view .blk-title, .reading-view .part-title, .reading-view .ws-title-h, .reading-view .quiz-title { overflow-wrap: anywhere; }
+.reading-view .blk-title { font-size: min(calc(34px * var(--rv-k)), 10vw); }
 .reading-view .ch-sub { font-size: calc(15px * var(--rv-k)); }
 .reading-view .quiz-q-text, .reading-view .ws-label, .reading-view .reflect-prompt { font-size: calc(15px * var(--rv-k)); }
 .reading-view .quiz-opt, .reading-view .ws-check, .reading-view .ws-p { font-size: calc(14.5px * var(--rv-k)); }
@@ -283,6 +285,10 @@
   animation: cardIn .6s cubic-bezier(.2, .8, .2, 1) .4s both;
 }
 @keyframes cardIn { from { opacity: 0; transform: translate(-50%, 24px); } to { opacity: 1; transform: translate(-50%, 0); } }
+@media (min-width: 1024px) {
+  .continue-card { left: 32px; transform: none; animation-name: cardInL; }
+}
+@keyframes cardInL { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
 .continue-close { position: absolute; top: 12px; right: 12px; width: 26px; height: 26px; display: grid; place-items: center; border-radius: 999px; color: var(--taupe); transition: background-color .15s; }
 .continue-close:hover { background: var(--cream); }
 .continue-label { margin-top: 8px; font-family: Montserrat, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: .08em; color: var(--taupe); }

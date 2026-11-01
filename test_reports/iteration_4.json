@@ -1,0 +1,32 @@
+{
+  "summary": "Frontend-only run of the font-size slider and the Lanjut membaca continue card, plus a quick regression; PDF and backend were skipped. Continue card, flip mode: fresh storage shows no card. After flipping to 11-12 and reloading, the card shows 'Ucapan Terima Kasih', Hal. 11, 6%, and the book opens on the cover. Lanjutkan goes to 11-12. Dari awal hides the card, stays on the cover and sets ht-page to 0. With ht-page=80 the card shows 'Bab 8 · Hal. 80 · Praktik Metode MINS · 40%', and Lanjutkan goes to 79-80 with chapter-opener-8 visible. Flipping a page dismisses the card, and continue-dismiss-x hides it. Continue card, reading mode: desktop and mobile both scroll #sec-bab-8 to the top (about 80px). Font size: btn-font-size appears only in reading mode. The popover and slider work by keyboard: 100% gives 17px desktop / 16.5px mobile, 150% gives 25.5px / 24.75px, 80% gives 13.6px. ht-font persists after reload and reset returns 100%. Mobile 390x844: the card fits (x 12, width 366, scrollWidth 390) and the toolbar fits. BUG: at 150% on mobile the page overflows horizontally (scrollWidth 409). Regression passed: TOC jump in flip and reading mode, highlight bab-1:2, adding a note, highlight-jump, and bookmark add/resume/remove. No page errors.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "ReadingView chapter titles at large font size (mobile)", "issue": "At ht-font 150% on a 390px screen, documentElement.scrollWidth is 409, so the page scrolls sideways. The cause is .reading-view .ch-title { font-size: calc(34px * var(--rv-k)) }, about 51px: long single words such as 'Berkepanjangan' (bab-17, ends at right=409px), and those in bab-12 and bab-15, are wider than the card. At 125% the width is fine (390). Fix: add overflow-wrap:anywhere / hyphens:auto on .ch-title (and .part-title / .blk-title), or cap the size, e.g. font-size: min(calc(34px*var(--rv-k)), 9vw).", "selector": ".reading-view h2.ch-title", "priority": "MEDIUM"},
+      {"component": "ContinueCard dismiss X", "issue": "The X button calls the same onDismiss as 'Dari awal', so resume is set to null and the effect writes ht-page=0 at once. Closing the card throws away the saved reading position. In the same way, an accidental arrow key or flip from the cover while the card is showing overwrites a saved page 80 with 1. Consider having X only hide the card and keep ht-page until the user actually moves.", "selector": "[data-testid='continue-dismiss-x']", "priority": "LOW"}
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Desktop flip mode with continue card", "issues": ["The card sits at the bottom centre and overlaps the 'Klik sudut halaman…' stage hint and the lower part of the cover/spread. Consider placing it bottom-left or hiding the hint while it is shown."]},
+      {"screen": "Reading mode", "issues": ["While the continue card is visible, reading progress is not saved (the effect only writes when resume === null). A user who scrolls without touching the card keeps the old saved page."]}
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Fix horizontal overflow in reading mode at large font sizes on mobile (.ch-title and other display titles need overflow-wrap/hyphens or a vw cap)",
+    "Optional: make continue-dismiss-x only hide the card without resetting ht-page to 0",
+    "Optional: move the continue card on desktop so it does not overlap the stage hint/book"
+  ],
+  "critical_code_review_comments": [
+    "Reader.jsx: the ht-page save effect is gated on resume === null. Dismissing the card writes current (0), so the saved progress is lost.",
+    "Reader.jsx continueReading in reading mode uses the section start, not the exact page; this is acceptable",
+    "Reader.jsx: hlItems is still not memoized (carried over)"
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (skipped)", "frontend": "~95% (1 medium overflow bug at 150% on mobile)"},
+  "seed_data_creation": "none (localStorage only: ht-page, ht-mode, ht-font, ht-hl, ht-notes, ht-bm)",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Each browser_automation call gets fresh localStorage. Sidebar tabs are sidebar-tab-{k} (nth 0/1/2 = toc/bookmarks/highlights). Note testids carry the id suffix: note-add-bab-1:2, note-input-…, note-save-…, note-text-…, highlight-jump-…, bookmark-remove-{page}. Reading-text blocks are .blk[data-hl-id]. Drive the font slider via the [role=slider] thumb inside [data-testid=font-size-slider] with keyboard (step 5). To check for overflow, set ht-font=150 at 390px and compare document.documentElement.scrollWidth with 390."
+}

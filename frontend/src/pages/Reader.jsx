@@ -55,6 +55,7 @@ export default function Reader() {
     return p > 1 ? p : null;
   });
   const [fontPct, setFontPct] = useState(() => Number(localStorage.getItem("ht-font")) || 100);
+  const [cardHidden, setCardHidden] = useState(false);
   useEffect(() => { localStorage.setItem("ht-font", String(fontPct)); }, [fontPct]);
   const [tocOpen, setTocOpen] = useState(false);
   const [pdf, setPdf] = useState({ open: false, busy: false, progress: 0 });
@@ -158,7 +159,13 @@ export default function Reader() {
   const isBookmarked = bookmarks.some((b) => b.page === current);
   const safeStart = Math.min(startRef.current, pages.length - 1);
 
-  const resumePage = resume !== null ? Math.min(resume + (pages[resume]?.kind === "blank" ? 1 : 0), pages.length - 1) : 0;
+  const resumePage = (() => {
+    if (resume === null) return 0;
+    const n = Math.min(resume, pages.length - 1);
+    const nx = pages[n + 1];
+    if (pages[n]?.kind === "blank" || (n % 2 === 1 && nx?.section && nx.section !== pages[n]?.section)) return Math.min(n + 1, pages.length - 1);
+    return n;
+  })();
   const continueReading = () => {
     const n = resumePage;
     setResume(null);
@@ -174,9 +181,9 @@ export default function Reader() {
   return (
     <QuizProvider>
       <div className="reader" data-testid="reader-container">
-        {resume !== null && (
+        {resume !== null && !cardHidden && (
           <ContinueCard section={resumeSection} page={resumePage} total={pages.length}
-            onContinue={continueReading} onDismiss={() => setResume(null)} />
+            onContinue={continueReading} onDismiss={() => setResume(null)} onClose={() => setCardHidden(true)} />
         )}
         <Toolbar onToc={() => setTocOpen(true)} onPrev={readMode ? () => stepSection(-1) : prev} onNext={readMode ? () => stepSection(1) : next}
           fontPct={fontPct} onFont={setFontPct}

@@ -1,11 +1,11 @@
 import { BookOpen, X } from "lucide-react";
 
-export function ContinueCard({ section, page, total, onContinue, onDismiss }) {
+export function ContinueCard({ section, page, total, onContinue, onDismiss, onClose }) {
   const label = section?.type === "chapter" ? `Bab ${section.chapter_number}` : section?.type === "part" ? `Bagian ${section.part_number}` : "Terakhir dibaca";
   const pct = Math.round((page / Math.max(1, total - 1)) * 100);
   return (
     <div className="continue-card" data-testid="continue-reading-card" role="dialog" aria-label="Lanjut membaca">
-      <button type="button" className="continue-close" data-testid="continue-dismiss-x" onClick={onDismiss} aria-label="Tutup"><X size={14} /></button>
+      <button type="button" className="continue-close" data-testid="continue-dismiss-x" onClick={onClose} aria-label="Tutup"><X size={14} /></button>
       <div className="kicker-ui">Lanjut membaca</div>
       <div className="continue-label">{label} · Hal. {page}</div>
       <div className="continue-title" data-testid="continue-section-title">{section?.title}</div>
