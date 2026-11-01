@@ -30,7 +30,7 @@ function SectionBody({ s, book }) {
   );
 }
 
-export function ReadingView({ book, onSection }) {
+export function ReadingView({ book, onSection, fontPct = 100 }) {
   const { hlMode } = useReaderState();
   const ref = useRef(null);
   useEffect(() => {
@@ -43,7 +43,7 @@ export function ReadingView({ book, onSection }) {
     return () => io.disconnect();
   }, [onSection]);
   return (
-    <div className={`reading-view ${hlMode ? "hl-mode" : ""}`} ref={ref} data-testid="reading-view">
+    <div className={`reading-view ${hlMode ? "hl-mode" : ""}`} ref={ref} data-testid="reading-view" style={{ "--rv-k": fontPct / 100 }}>
       <img className="rv-cover" src={assetUrl(book.meta.front_cover)} alt="Cover Happiness Trading" />
       {book.sections.filter((s) => s.type !== "toc").map((s) => (
         <section key={s.key} id={`sec-${s.key}`} data-sec={s.key} className="rv-section">

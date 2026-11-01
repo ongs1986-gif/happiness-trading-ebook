@@ -13,6 +13,7 @@ import { Toolbar } from "../components/reader/Toolbar";
 import { TocSidebar } from "../components/reader/TocSidebar";
 import { PdfModal } from "../components/reader/PdfModal";
 import { ReadingView } from "../components/reader/ReadingView";
+import { ContinueCard } from "../components/reader/ContinueCard";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 const FONTS = ['700 30px "Playfair Display"', 'italic 400 20px "Playfair Display"', '600 13px Montserrat', '400 12.5px Inter', '500 12px Inter'];
@@ -48,7 +49,13 @@ async function loadBook() {
 export default function Reader() {
   const [data, setData] = useState(null);
   const [error, setError] = useState(false);
-  const [current, setCurrent] = useState(() => Number(localStorage.getItem("ht-page")) || 0);
+  const [current, setCurrent] = useState(0);
+  const [resume, setResume] = useState(() => {
+    const p = Number(localStorage.getItem("ht-page")) || 0;
+    return p > 1 ? p : null;
+  });
+  const [fontPct, setFontPct] = useState(() => Number(localStorage.getItem("ht-font")) || 100);
+  useEffect(() => { localStorage.setItem("ht-font", String(fontPct)); }, [fontPct]);
   const [tocOpen, setTocOpen] = useState(false);
   const [pdf, setPdf] = useState({ open: false, busy: false, progress: 0 });
   const printRef = useRef(null);
@@ -66,7 +73,7 @@ export default function Reader() {
   const [readKey, setReadKey] = useState(null);
 
   useEffect(() => { loadBook().then(setData).catch(() => setError(true)); }, []);
-  useEffect(() => { localStorage.setItem("ht-page", String(current)); startRef.current = current; }, [current]);
+  useEffect(() => { if (data && resume === null) localStorage.setItem("ht-page", String(current)); startRef.current = current; }, [current, data, resume]);
 
   const pages = data?.built.pages;
   const toc = useMemo(() => data && { items: data.built.toc, perPage: data.built.tocPerPage }, [data]);
@@ -151,10 +158,28 @@ export default function Reader() {
   const isBookmarked = bookmarks.some((b) => b.page === current);
   const safeStart = Math.min(startRef.current, pages.length - 1);
 
+  const resumePage = resume !== null ? Math.min(resume + (pages[resume]?.kind === "blank" ? 1 : 0), pages.length - 1) : 0;
+  const continueReading = () => {
+    const n = resumePage;
+    setResume(null);
+    if (readMode) {
+      const sec = sectionAt(pages, n);
+      document.getElementById(`sec-${sec?.key}`)?.scrollIntoView();
+      return;
+    }
+    flip(n);
+  };
+  const resumeSection = resume !== null ? sectionAt(pages, resumePage) : null;
+
   return (
     <QuizProvider>
       <div className="reader" data-testid="reader-container">
+        {resume !== null && (
+          <ContinueCard section={resumeSection} page={resumePage} total={pages.length}
+            onContinue={continueReading} onDismiss={() => setResume(null)} />
+        )}
         <Toolbar onToc={() => setTocOpen(true)} onPrev={readMode ? () => stepSection(-1) : prev} onNext={readMode ? () => stepSection(1) : next}
+          fontPct={fontPct} onFont={setFontPct}
           current={current} total={pages.length} readMode={readMode} onReadMode={toggleReadMode}
           mobile={mobile || readMode} onPdf={() => setPdf((s) => ({ ...s, open: true }))} sectionTitle={section?.title}
           hlMode={hlMode} onHl={() => { setHlMode(!hlMode); toast(hlMode ? "Mode stabilo nonaktif" : "Mode stabilo aktif — ketuk paragraf untuk menandai"); }}
@@ -162,7 +187,7 @@ export default function Reader() {
           sound={sound} onSound={() => setSound(!sound)} />
         {readMode ? (
           <main className="rv-stage" data-testid="book-canvas-reading">
-            <ReadingView book={data.book} onSection={onReadSection} />
+            <ReadingView book={data.book} onSection={onReadSection} fontPct={fontPct} />
           </main>
         ) : (
         <main className="stage" data-testid="book-canvas">
@@ -175,7 +200,7 @@ export default function Reader() {
               flippingTime={850} mobileScrollSupport startPage={safeStart} startZIndex={0}
               autoSize={false} clickEventForward useMouseEvents swipeDistance={30} showPageCorners
               disableFlipByClick={false} className="flipbook" style={{}}
-              onFlip={(e) => { setCurrent(e.data); if (soundRef.current) playFlipSound(); }}
+              onFlip={(e) => { setCurrent(e.data); setResume(null); if (soundRef.current) playFlipSound(); }}
             >
               {children}
             </HTMLFlipBook>

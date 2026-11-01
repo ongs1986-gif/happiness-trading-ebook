@@ -1,8 +1,10 @@
 import { AlignLeft, BookOpen, Bookmark, BookmarkCheck, ChevronLeft, ChevronRight, Download, Highlighter, List, Volume2, VolumeX } from "lucide-react";
+import { FontSizeControl } from "./FontSizeControl";
 
-function ToolIcons({ hlMode, onHl, bookmarked, onBookmark, sound, onSound, readMode, onReadMode }) {
+function ToolIcons({ hlMode, onHl, bookmarked, onBookmark, sound, onSound, readMode, onReadMode, fontPct, onFont }) {
   return (
     <div className="flex items-center gap-1.5">
+      {readMode && <FontSizeControl value={fontPct} onChange={onFont} />}
       <button type="button" className={`tb-icon ${readMode ? "is-on-bm" : ""}`} data-testid="btn-reading-mode" onClick={onReadMode}
         aria-label="Mode baca" title={readMode ? "Kembali ke tampilan buku" : "Mode baca (teks besar)"}>{readMode ? <BookOpen size={16} /> : <AlignLeft size={16} />}</button>
       <button type="button" className={`tb-icon ${hlMode ? "is-on-hl" : ""}`} data-testid="btn-highlight-mode" onClick={onHl}

@@ -247,28 +247,49 @@
 .rv-back { background: #EFEFED; border-radius: 6px; padding: 28px 24px; margin-top: 40px; }
 .rv-back .back2 { gap: 24px; }
 .rv-card .author-card { height: auto !important; }
-.reading-view .page-body, .reading-view .rv-text { font-size: 17px; line-height: 1.8; }
+.reading-view { --rv-k: 1; }
+.reading-view .page-body, .reading-view .rv-text { font-size: calc(17px * var(--rv-k)); line-height: 1.8; }
 .reading-view .blk { margin-bottom: 14px; }
 .reading-view .blk-p { text-align: left; }
-.reading-view .blk-title { font-size: 34px; }
-.reading-view .blk-h2 { font-size: 18px; margin-top: 26px; }
-.reading-view .blk-h3 { font-size: 16px; }
-.reading-view .blk-quote { font-size: 20px; }
-.reading-view .blk-verse { font-size: 18px; }
+.reading-view .blk-title { font-size: calc(34px * var(--rv-k)); }
+.reading-view .blk-h2 { font-size: calc(18px * var(--rv-k)); margin-top: 26px; }
+.reading-view .blk-h3 { font-size: calc(16px * var(--rv-k)); }
+.reading-view .blk-quote { font-size: calc(20px * var(--rv-k)); }
+.reading-view .blk-verse { font-size: calc(18px * var(--rv-k)); }
+.reading-view .blk-note { font-size: calc(13px * var(--rv-k)); }
 .reading-view .blk-img { height: auto; }
 .reading-view .blk-img img { height: auto; }
-.reading-view .ch-title { font-size: 34px; }
-.reading-view .ch-sub { font-size: 15px; }
-.reading-view .quiz-q-text, .reading-view .ws-label, .reading-view .reflect-prompt { font-size: 15px; }
-.reading-view .quiz-opt, .reading-view .ws-check, .reading-view .ws-p { font-size: 14.5px; }
-.reading-view .ws-title-h, .reading-view .quiz-title { font-size: 30px; }
-.reading-view .ws-h { font-size: 16px; }
-.reading-view .reflect-input { font-size: 15px; }
+.reading-view .ch-title { font-size: calc(34px * var(--rv-k)); }
+.reading-view .ch-sub { font-size: calc(15px * var(--rv-k)); }
+.reading-view .quiz-q-text, .reading-view .ws-label, .reading-view .reflect-prompt { font-size: calc(15px * var(--rv-k)); }
+.reading-view .quiz-opt, .reading-view .ws-check, .reading-view .ws-p { font-size: calc(14.5px * var(--rv-k)); }
+.reading-view .ws-title-h, .reading-view .quiz-title { font-size: calc(30px * var(--rv-k)); }
+.reading-view .ws-h { font-size: calc(16px * var(--rv-k)); }
+.reading-view .reflect-input, .reading-view .ws-input { font-size: calc(15px * var(--rv-k)); }
+.reading-view .part-title { font-size: calc(31px * var(--rv-k)); }
+.reading-view .part-desc { font-size: calc(14px * var(--rv-k)); }
 @media (max-width: 640px) {
   .rv-stage { padding: 12px 8px 60px; }
   .reading-view { padding: 24px 18px 44px; }
-  .reading-view .page-body, .reading-view .rv-text { font-size: 16.5px; }
+  .reading-view .page-body, .reading-view .rv-text { font-size: calc(16.5px * var(--rv-k)); }
 }
+
+/* Continue reading card */
+.continue-card {
+  position: fixed; z-index: 40; left: 50%; bottom: 28px; transform: translateX(-50%);
+  width: min(380px, calc(100vw - 24px)); padding: 20px 22px 18px; border-radius: 16px;
+  background: rgba(253, 251, 247, 0.88); backdrop-filter: blur(18px); border: 1px solid var(--line);
+  box-shadow: 0 24px 50px -20px rgba(44, 42, 41, .35);
+  animation: cardIn .6s cubic-bezier(.2, .8, .2, 1) .4s both;
+}
+@keyframes cardIn { from { opacity: 0; transform: translate(-50%, 24px); } to { opacity: 1; transform: translate(-50%, 0); } }
+.continue-close { position: absolute; top: 12px; right: 12px; width: 26px; height: 26px; display: grid; place-items: center; border-radius: 999px; color: var(--taupe); transition: background-color .15s; }
+.continue-close:hover { background: var(--cream); }
+.continue-label { margin-top: 8px; font-family: Montserrat, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: .08em; color: var(--taupe); }
+.continue-title { font-family: "Playfair Display", serif; font-weight: 700; font-size: 20px; line-height: 1.25; margin-top: 4px; padding-right: 20px; }
+.continue-bar { margin-top: 12px; height: 4px; border-radius: 999px; background: var(--cream); overflow: hidden; }
+.continue-bar span { display: block; height: 100%; background: var(--green); border-radius: 999px; }
+.continue-pct { margin-top: 5px; font-size: 11px; color: var(--taupe); }
 
 /* Notes */
 .blk-noted { position: relative; }
