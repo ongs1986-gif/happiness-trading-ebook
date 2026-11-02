@@ -4,7 +4,10 @@ from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
+import json
+import hashlib
 import logging
+from datetime import datetime, timezone
 from pathlib import Path
 from pydantic import BaseModel, ConfigDict
 from typing import List, Optional, Dict, Any
@@ -56,6 +59,24 @@ class BookMeta(BaseModel):
 class Book(BaseModel):
     meta: BookMeta
     sections: List[Section]
+    content_hash: str
+
+
+class LayoutIn(BaseModel):
+    key: str
+    layout: Dict[str, Any]
+
+
+def content_hash(meta: dict, sections: list) -> str:
+    raw = json.dumps({"meta": meta, "sections": sections}, sort_keys=True, ensure_ascii=False)
+    return hashlib.sha1(raw.encode()).hexdigest()[:16]
+
+
+async def load_book() -> Book:
+    meta = await db.book_meta.find_one({}, {"_id": 0, "seed_version": 0})
+    sections = await db.sections.find({}, {"_id": 0}).sort("order", 1).to_list(500)
+    m, ss = BookMeta(**meta), [Section(**s) for s in sections]
+    return Book(meta=m, sections=ss, content_hash=content_hash(m.model_dump(), [s.model_dump() for s in ss]))
 
 
 async def seed():
@@ -73,6 +94,7 @@ async def seed():
 @app.on_event("startup")
 async def on_startup():
     await seed()
+    await db.layouts.create_index("key", unique=True)
 
 
 @api_router.get("/")
@@ -82,9 +104,29 @@ async def root():
 
 @api_router.get("/book", response_model=Book)
 async def get_book():
-    meta = await db.book_meta.find_one({}, {"_id": 0})
-    sections = await db.sections.find({}, {"_id": 0}).sort("order", 1).to_list(500)
-    return Book(meta=BookMeta(**meta), sections=[Section(**s) for s in sections])
+    return await load_book()
+
+
+@api_router.get("/layout/{key}")
+async def get_layout(key: str):
+    doc = await db.layouts.find_one({"key": key}, {"_id": 0})
+    if not doc:
+        raise HTTPException(404, "Layout not computed yet")
+    return doc
+
+
+@api_router.post("/layout")
+async def save_layout(body: LayoutIn):
+    # First computed layout for the current content wins; later devices reuse it.
+    book = await load_book()
+    if not body.key.startswith(book.content_hash + ":"):
+        raise HTTPException(409, "Layout key does not match current book content")
+    if len(json.dumps(body.layout)) > 8_000_000 or not isinstance(body.layout.get("pages"), list):
+        raise HTTPException(400, "Invalid layout")
+    await db.layouts.update_one({"key": body.key}, {"$setOnInsert": {"key": body.key, "layout": body.layout,
+                                "created_at": datetime.now(timezone.utc).isoformat()}}, upsert=True)
+    doc = await db.layouts.find_one({"key": body.key}, {"_id": 0})
+    return doc
 
 
 @api_router.get("/assets/{name}")

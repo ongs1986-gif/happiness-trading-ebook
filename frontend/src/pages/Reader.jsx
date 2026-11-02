@@ -5,6 +5,7 @@ import HTMLFlipBook from "react-pageflip";
 import { toast } from "sonner";
 import { buildBook, sectionAt, PAGE_W, PAGE_H, BODY_W, BODY_H } from "../lib/book";
 import { exportPdf } from "../lib/exportPdf";
+import { getLockedLayout } from "../lib/layoutStore";
 import { FlipPage, PageContent } from "../components/book/Pages";
 import { QuizProvider } from "../components/book/quizState";
 import { useReaderState } from "../components/book/readerState";
@@ -33,16 +34,22 @@ function useLayout() {
   return { mobile, scale: Math.floor(scale * 100) / 100 };
 }
 
+const LAYOUT_SAFETY = 26;
+
 async function loadBook() {
   const { data } = await axios.get(`${API}/book`);
   await Promise.all(FONTS.map((f) => document.fonts.load(f)));
   await document.fonts.ready;
-  const el = document.createElement("div");
-  el.className = "page-body page-measure";
-  Object.assign(el.style, { width: `${BODY_W}px`, height: `${BODY_H}px` });
-  document.body.appendChild(el);
-  const built = buildBook(data.sections, el);
-  el.remove();
+  const built = await getLockedLayout(data, () => {
+    const el = document.createElement("div");
+    el.className = "page-body page-measure";
+    // Measure slightly shorter than the real page so other devices' font rendering still fits.
+    Object.assign(el.style, { width: `${BODY_W}px`, height: `${BODY_H - LAYOUT_SAFETY}px` });
+    document.body.appendChild(el);
+    const b = buildBook(data.sections, el);
+    el.remove();
+    return b;
+  });
   return { book: data, built };
 }
 
