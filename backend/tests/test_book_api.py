@@ -31,10 +31,10 @@ def test_book_meta(book):
 
 def test_sections_count_and_order(book):
     s = book["sections"]
-    assert len(s) == 38
+    assert len(s) == 40
     orders = [x["order"] for x in s]
     assert orders == sorted(orders)
-    assert len({x["key"] for x in s}) == 38
+    assert len({x["key"] for x in s}) == 40
     assert all("_id" not in x for x in s)
 
 

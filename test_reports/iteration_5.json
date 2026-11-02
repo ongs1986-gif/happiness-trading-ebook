@@ -1,0 +1,31 @@
+{
+  "summary": "Tested the locked shared layout on the backend and frontend. Backend: 14/14 pytest pass (6 new layout tests plus the existing book tests). content_hash is stable (2b02b9e336f17475). GET /api/layout/<hash>:v1 returns 230 pages with no _id. An unknown key returns 404, a wrong-hash POST returns 409, and a pages-not-list POST returns 400. Re-POSTing the same key with 1 page returns and keeps 230 pages (first write wins). Frontend in flip mode at 1920x800, 1280x720 and 390x844: the indicator shows 'Hal. 0 / 229' everywhere. All 169 .flip-page .page-body elements have scrollHeight <= clientHeight. TOC numbers match on every viewport (profil-penulis 225, bab-1 22, bab-8 92, bab-10 122). Only GET /api/layout is called on load, with no POST, so the stored layout is reused. Regression: the TOC jump to bab-8 lands on 91-92 with chapter-opener-8 visible. The continue card (ht-page=40) resumes to 39-40. Reading mode toggles both ways. Highlighting bab-1:3 sets blk-hl and stores it in ht-hl. The PDF modal says 230 pages, and the downloaded PDF has 230 pages (24.8MB).",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "POST /api/layout", "issue": "No auth and little validation: only checks that pages is a list and under 8MB. The first client to post a layout for a new content hash locks it forever, even if it is a buggy or malicious client, or one whose web fonts failed to load and fell back to another font. There is no admin reset short of bumping LAYOUT_VERSION or editing the DB."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": ["/app/backend/tests/test_layout_lock.py", "/app/backend/tests/test_book_api.py", "/app/test_reports/pytest/pytest_results.xml"],
+  "action_items": [
+    "Optional hardening: before computing or saving a layout, check that the fonts actually loaded (document.fonts.check for each FONTS entry) so a fallback-font layout is never locked. Also validate pages on the server (e.g. a count range, each page has sk or type).",
+    "Optional: add a protected endpoint or script to reset db.layouts for a key."
+  ],
+  "critical_code_review_comments": [
+    "layoutStore.getLockedLayout: any GET error other than 404 (network or 5xx) makes loadBook throw and shows reader-error, even though computing the layout locally would work. Consider falling back to compute() in that case.",
+    "Fit on other browsers and engines (Safari, Firefox) relies only on the 26px LAYOUT_SAFETY margin. Only Chromium was checked for overflow.",
+    "Switching flip to reading mode snaps to the section start (39-40 becomes Hal. 30, and switching back gives 29-30). This is section-level by design and was already the case before this change.",
+    "The double GET /api/layout on load comes from React.StrictMode in dev only. Harmless."
+  ],
+  "updated_files": ["/app/backend/tests/test_layout_lock.py (new)", "/app/backend/tests/test_book_api.py (section count 38 -> 40; the old test was out of date)"],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "seed_data_creation": "None. The stored layout 2b02b9e336f17475:v1 was left intact; the overwrite attempt was rejected as designed.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Use a new browser context with add_init_script guarded by sessionStorage to set localStorage (ht-mode, ht-page). Setting it and then reloading races with the app writing ht-page=0. PDF: click btn-download-pdf, then pdf-start-button. The download takes about 2-3 minutes in the test env. Highlight blocks are div[data-hl-id] and get the blk-hl class. TOC numbers are in [data-testid=toc-link-<key>] .toc-side-num."
+}

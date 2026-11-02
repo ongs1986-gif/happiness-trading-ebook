@@ -46,6 +46,11 @@ Personal web e-book reader for "Happiness Trading" by Ongah Hermanto: realistic 
   - "Refleksi Tambahan" fields in each worksheet; +1 first-draft MC question per Quiz Cepat (4 each)
 - Book now ~222 pages
 
+## Iteration 6 (2026-06) — Locked layout
+- Shared pagination stored in Mongo `layouts` keyed `<content_hash>:<LAYOUT_VERSION>` (first-write-wins); all devices reuse it → identical 230 pages
+- Computed with 26px safety margin; only saved if web fonts loaded
+- To re-layout after CSS/pagination changes: bump LAYOUT_VERSION in frontend/src/lib/layoutStore.js (content changes re-layout automatically)
+
 ## Backlog
 - P0: Author bio + photo; confirm Bagian III title; Kata Pengantar text or remove
 - P1: Better mobile legibility (text ~10px at 390px); hide blank versos on mobile

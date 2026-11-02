@@ -15,7 +15,7 @@ const deserialize = (layout, sections) => {
 };
 
 // Returns the shared (locked) layout; computes and stores it only if none exists yet for this content.
-export async function getLockedLayout(book, compute) {
+export async function getLockedLayout(book, compute, canSave = true) {
   const key = `${book.content_hash}:${LAYOUT_VERSION}`;
   try {
     const { data } = await axios.get(`${API}/layout/${encodeURIComponent(key)}`);
@@ -24,6 +24,7 @@ export async function getLockedLayout(book, compute) {
     if (e.response?.status !== 404) throw e;
   }
   const built = compute();
+  if (!canSave) return built;
   try {
     const { data } = await axios.post(`${API}/layout`, { key, layout: serialize(built) });
     return deserialize(data.layout, book.sections);

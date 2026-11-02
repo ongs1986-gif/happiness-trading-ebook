@@ -49,7 +49,7 @@ async function loadBook() {
     const b = buildBook(data.sections, el);
     el.remove();
     return b;
-  });
+  }, FONTS.every((f) => document.fonts.check(f)));
   return { book: data, built };
 }
 
