@@ -2,7 +2,7 @@ import axios from "axios";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 // Bump when pagination rules or page CSS change, so a fresh shared layout is computed.
-export const LAYOUT_VERSION = "v1";
+export const LAYOUT_VERSION = "v2";
 
 const serialize = (built) => ({
   ...built,

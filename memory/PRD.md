@@ -51,6 +51,10 @@ Personal web e-book reader for "Happiness Trading" by Ongah Hermanto: realistic 
 - Computed with 26px safety margin; only saved if web fonts loaded
 - To re-layout after CSS/pagination changes: bump LAYOUT_VERSION in frontend/src/lib/layoutStore.js (content changes re-layout automatically)
 
+## Iteration 7 (2026-06)
+- Author photo (assets/author_photo.jpg, cropped from upload) as portrait on profile page; LAYOUT_VERSION v2 (228 pages)
+- Warm night theme (html.theme-night CSS vars), toggle btn-theme-toggle, persisted ht-theme; PDF always renders light palette
+
 ## Backlog
 - P0: Author bio + photo; confirm Bagian III title; Kata Pengantar text or remove
 - P1: Better mobile legibility (text ~10px at 390px); hide blank versos on mobile

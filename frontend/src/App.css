@@ -312,6 +312,64 @@
 .hl-note-btn { font-family: Montserrat, sans-serif; font-weight: 600; font-size: 11px; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--line); background: #fff; }
 .hl-note-btn.is-primary { background: var(--charcoal); color: var(--ivory); border-color: var(--charcoal); }
 
+/* ---------- Night theme (warm dark) ---------- */
+html.theme-night {
+  --ivory: #221D18;
+  --cream: #2C261F;
+  --paper: #262019;
+  --charcoal: #E8DFCF;
+  --taupe: #A89E8E;
+  --line: #3B342B;
+  --red: #E0857A;
+  --red-soft: #3A2521;
+  --green: #86C39B;
+  --green-soft: #1F3027;
+  color-scheme: dark;
+}
+html.theme-night body { background: #17130F; }
+html.theme-night .reader { background: radial-gradient(ellipse at 50% 40%, rgba(70, 55, 40, 0.35), transparent 60%), #17130F; }
+html.theme-night .reader::before { opacity: .12; }
+html.theme-night .toolbar { background: rgba(28, 23, 18, 0.82); }
+html.theme-night .tb-primary { background: #E8DFCF; color: #1C1712; border-color: #E8DFCF; }
+html.theme-night .tb-primary:hover { background: var(--green); border-color: var(--green); color: #12100D; }
+html.theme-night .tb-icon.is-on-night { background: #3A3024; border-color: #C59B27; color: #F2C866; }
+html.theme-night .tb-icon.is-on-hl { color: #2C2A29; }
+html.theme-night .book-shadow { filter: drop-shadow(0 24px 30px rgba(0, 0, 0, 0.55)); }
+html.theme-night .pg-side-left { box-shadow: inset -18px 0 24px -20px rgba(0, 0, 0, .7); }
+html.theme-night .pg-side-right { box-shadow: inset 18px 0 24px -20px rgba(0, 0, 0, .7); }
+html.theme-night .blk-quote, html.theme-night .blk-verse, html.theme-night .blk-h3, html.theme-night .back-blurb, html.theme-night .ws-p { color: #D9CFBE; }
+html.theme-night .blk-box { background: #2B261E; }
+html.theme-night .blk-img img, html.theme-night .ch-illus { filter: brightness(.82) saturate(.9); }
+html.theme-night .blk-hl { background: linear-gradient(180deg, transparent 8%, rgba(197, 155, 39, 0.38) 8%, rgba(197, 155, 39, 0.38) 96%, transparent 96%); }
+html.theme-night .quiz-opt, html.theme-night .quiz-retake, html.theme-night .hl-note-btn, html.theme-night .hl-note-edit textarea { background: #2A241D; color: var(--charcoal); }
+html.theme-night .quiz-submit { background: #E8DFCF; color: #1C1712; }
+html.theme-night .quiz-score { border-color: #2F4A39; }
+html.theme-night .reflect-input, html.theme-night .reflect-lines { background: repeating-linear-gradient(transparent, transparent 23px, #4A4136 23px, #4A4136 24px); }
+html.theme-night .ws-line { border-bottom-color: #4A4136; }
+html.theme-night .toc-dots { background-image: linear-gradient(to right, #5A5043 50%, transparent 50%); }
+html.theme-night .part-num { -webkit-text-stroke-color: #5A5043; }
+html.theme-night .toc-sheet { background: #1E1914 !important; }
+html.theme-night .toc-sheet .text-\[\#2C2A29\], html.theme-night [data-testid="pdf-download-modal"] .text-\[\#2C2A29\] { color: var(--charcoal); }
+html.theme-night .toc-sheet input { background: #2A241D; border-color: var(--line); color: var(--charcoal); }
+html.theme-night .toc-side-link.is-active { background: #E8DFCF; color: #1C1712; }
+html.theme-night .hl-row { background: rgba(197, 155, 39, 0.12); }
+html.theme-night .hl-text { color: var(--charcoal); }
+html.theme-night [data-testid="pdf-download-modal"], html.theme-night [data-testid="font-size-popover"] { background: #221D18; border-color: var(--line); color: var(--charcoal); }
+html.theme-night .continue-card { background: rgba(34, 29, 24, 0.9); }
+html.theme-night .reading-view { box-shadow: 0 20px 40px -24px rgba(0, 0, 0, .7); }
+html.theme-night .reader-state { background: #17130F; }
+/* PDF always renders in the light print palette */
+.print-root { --ivory: #FDFBF7; --cream: #F7F3E9; --charcoal: #2C2A29; --taupe: #65605A; --line: #E8E2D5; --red: #C84B4B; --red-soft: #F9ECEC; --green: #3B8258; --green-soft: #EEF6F1; color: #2C2A29; }
+html.theme-night .print-root .blk-quote, html.theme-night .print-root .blk-verse, html.theme-night .print-root .blk-h3, html.theme-night .print-root .ws-p { color: #3d3a38; }
+html.theme-night .print-root .blk-box { background: #F3EEE1; }
+html.theme-night .print-root .blk-img img, html.theme-night .print-root .ch-illus { filter: none; }
+html.theme-night .print-root .blk-hl { background: linear-gradient(180deg, transparent 8%, rgba(250, 222, 120, 0.55) 8%, rgba(250, 222, 120, 0.55) 96%, transparent 96%); }
+html.theme-night .print-root .quiz-opt, html.theme-night .print-root .quiz-retake { background: #fff; color: #2C2A29; }
+html.theme-night .print-root .quiz-submit { background: #2C2A29; color: #FDFBF7; }
+html.theme-night .print-root .toc-dots { background-image: linear-gradient(to right, #B9AE98 50%, transparent 50%); }
+html.theme-night .print-root .part-num { -webkit-text-stroke-color: #BDB39F; }
+html.theme-night .print-root .pg-side-left, html.theme-night .print-root .pg-side-right { box-shadow: none; }
+
 /* Collaboration box: Intisari & Langkah Praktis */
 .blk-box { background: #F3EEE1; margin: 0; padding: 3px 14px 6px; border-left: 3px solid var(--green); }
 .blk-box.blk-h2 { margin-top: 18px; padding-top: 12px; color: var(--green); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; border-radius: 0 6px 0 0; }
@@ -336,6 +394,7 @@
 .hl-mode .blk:not(.blk-img):not(.blk-hl):hover { background: rgba(250, 222, 120, 0.25); }
 .ch-sub { font-family: Montserrat, sans-serif; font-weight: 500; font-size: 12.5px; line-height: 1.5; color: var(--taupe); margin-top: 8px; }
 .author-photo { object-fit: cover; }
+.author-portrait { width: 105px; height: 140px; flex: none; object-fit: cover; border-radius: 6px; border: 1px solid var(--line); box-shadow: 0 10px 18px -12px rgba(44, 42, 41, .5); }
 
 /* Worksheet */
 .ws { top: 46px; }

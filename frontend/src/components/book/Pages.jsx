@@ -204,7 +204,7 @@ export function AuthorPage({ page, book, print }) {
         <h2 className="blk blk-title">Profil Penulis</h2>
         <div className="author-head">
           {photo
-            ? <img className="author-avatar author-photo" src={assetUrl(photo)} alt="Ongah Hermanto" crossOrigin="anonymous" />
+            ? <img className="author-portrait" data-testid="author-photo" src={assetUrl(photo)} alt="Ongah Hermanto" crossOrigin="anonymous" />
             : <div className="author-avatar">OH</div>}
           <div>
             <div className="author-name">Ongah Hermanto</div>

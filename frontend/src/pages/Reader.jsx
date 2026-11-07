@@ -63,6 +63,11 @@ export default function Reader() {
   });
   const [fontPct, setFontPct] = useState(() => Number(localStorage.getItem("ht-font")) || 100);
   const [cardHidden, setCardHidden] = useState(false);
+  const [night, setNight] = useState(() => localStorage.getItem("ht-theme") === "night");
+  useEffect(() => {
+    document.documentElement.classList.toggle("theme-night", night);
+    localStorage.setItem("ht-theme", night ? "night" : "day");
+  }, [night]);
   useEffect(() => { localStorage.setItem("ht-font", String(fontPct)); }, [fontPct]);
   const [tocOpen, setTocOpen] = useState(false);
   const [pdf, setPdf] = useState({ open: false, busy: false, progress: 0 });
@@ -193,7 +198,7 @@ export default function Reader() {
             onContinue={continueReading} onDismiss={() => setResume(null)} onClose={() => setCardHidden(true)} />
         )}
         <Toolbar onToc={() => setTocOpen(true)} onPrev={readMode ? () => stepSection(-1) : prev} onNext={readMode ? () => stepSection(1) : next}
-          fontPct={fontPct} onFont={setFontPct}
+          fontPct={fontPct} onFont={setFontPct} night={night} onNight={() => setNight(!night)}
           current={current} total={pages.length} readMode={readMode} onReadMode={toggleReadMode}
           mobile={mobile || readMode} onPdf={() => setPdf((s) => ({ ...s, open: true }))} sectionTitle={section?.title}
           hlMode={hlMode} onHl={() => { setHlMode(!hlMode); toast(hlMode ? "Mode stabilo nonaktif" : "Mode stabilo aktif — ketuk paragraf untuk menandai"); }}

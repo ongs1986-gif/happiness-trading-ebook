@@ -1,4 +1,4 @@
-SEED_VERSION = 5
+SEED_VERSION = 6
 
 PLACEHOLDER = "[Teks contoh — akan diganti dengan naskah asli dari penulis.]"
 
@@ -145,7 +145,7 @@ META = {
     "publisher": "mynalura.com",
     "year": "2026",
     "front_cover": "cover_front.jpg",
-    "author_photo": None,
+    "author_photo": "author_photo.jpg",
     "back_blurb": "Trading bukan hanya tentang membaca pasar. Trading adalah perjalanan membaca diri sendiri. Happiness Trading mengajak Anda membangun fondasi profesional, menguasai emosi, membaca pasar dengan jernih, menjaga modal dengan matematika kedamaian batin, hingga menjadi The Happiness Trader — tetap utuh saat rugi, rendah hati saat untung.",
     "config": {
         "page_width": 440,

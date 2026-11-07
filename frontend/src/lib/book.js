@@ -6,7 +6,7 @@ const TOC_PER_PAGE = 17;
 const Q_PER_PAGE = 2;
 const SPLITTABLE = new Set(["p", "quote", "li", "note"]);
 const IMG_H = 238;
-export const AUTHOR_CARD_H = 168;
+export const AUTHOR_CARD_H = 222;
 
 export function parseContent(text = "") {
   return text.split("\n").filter((l) => l.trim()).map((l) => {
