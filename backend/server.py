@@ -52,6 +52,9 @@ class BookMeta(BaseModel):
     year: str
     front_cover: Optional[str] = None
     author_photo: Optional[str] = None
+    back_photo: Optional[str] = None
+    back_tagline: Optional[str] = None
+    back_summary: Optional[str] = None
     back_blurb: str
     config: Dict[str, Any]
 

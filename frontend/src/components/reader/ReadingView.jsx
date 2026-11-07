@@ -1,8 +1,8 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { sectionBlocks, PAGE_W, PAGE_H } from "../../lib/book";
 import { BlockList, ChapterPage, PartPage, AuthorPage, TitlePage, Back, assetUrl } from "../book/Pages";
 import { WorksheetPage } from "../book/WorksheetPage";
 import { QuizPage } from "../book/QuizPage";
-import { sectionBlocks } from "../../lib/book";
 import { useReaderState } from "../book/readerState";
 
 function QuizSection({ s }) {
@@ -30,6 +30,23 @@ function SectionBody({ s, book }) {
   );
 }
 
+function ScaledBack({ book }) {
+  const ref = useRef(null);
+  const [s, setS] = useState(1);
+  useEffect(() => {
+    const ro = new ResizeObserver(([e]) => setS(e.contentRect.width / PAGE_W));
+    ro.observe(ref.current);
+    return () => ro.disconnect();
+  }, []);
+  return (
+    <div ref={ref} className="rv-back-scaled" style={{ height: PAGE_H * s }}>
+      <div style={{ width: PAGE_W, height: PAGE_H, transform: `scale(${s})`, transformOrigin: "top left", position: "relative" }}>
+        <Back book={book} />
+      </div>
+    </div>
+  );
+}
+
 export function ReadingView({ book, onSection, fontPct = 100 }) {
   const { hlMode } = useReaderState();
   const ref = useRef(null);
@@ -50,7 +67,7 @@ export function ReadingView({ book, onSection, fontPct = 100 }) {
           <SectionBody s={s} book={book} />
         </section>
       ))}
-      <div className="rv-card rv-back"><Back book={book} /></div>
+      {book.meta.back_photo ? <ScaledBack book={book} /> : <div className="rv-card rv-back"><Back book={book} /></div>}
     </div>
   );
 }

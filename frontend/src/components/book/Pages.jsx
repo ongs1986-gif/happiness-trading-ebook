@@ -61,6 +61,25 @@ export function CandleFace({ happy, size = 46 }) {
 
 export function Back({ book }) {
   const m = book.meta;
+  if (m.back_photo) {
+    return (
+      <div className="back3" data-testid="back-cover">
+        <img className="back3-img" src={assetUrl(m.back_photo)} alt="Ongah Hermanto" crossOrigin="anonymous" />
+        <div className="back3-shade" />
+        <div className="back3-panel">
+          <div className="back3-tagline" data-testid="back-cover-tagline">{m.back_tagline}</div>
+          <div className="back3-rule" />
+          <p className="back3-summary">{m.back_summary}</p>
+          <p className="back3-tag">Happy Trade. Happy Mind. Happier Life.</p>
+          <div className="back3-foot">
+            <span>{m.author}</span>
+            <span className="back3-title">ha<b className="r">p</b>piness trad<b className="g">i</b>ng</span>
+            <span>{m.publisher}</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="back2" data-testid="back-cover">
       <div className="back2-top"><CandleFace size={70} /></div>
