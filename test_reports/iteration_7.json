@@ -1,0 +1,20 @@
+{
+  "summary": "Short retest of the v3 back-cover fix. Backend: 17/17 pytest pass. meta.back_photo is 'back_photo_v3.jpg' and the asset returns 200 (880x1248). Desktop 1920x800 flip: TOC -> profil-penulis -> next reaches 'Hal. 229 / 229'. The back cover loads /api/assets/back_photo_v3.jpg. current-section-title reads 'Cover Belakang' and the tagline 'There is no easy in becoming The New No. 1' is present. A close-up of the top 70px of the rendered cover shows only dark purple: no CCTV, projector or ceiling sliver. The raw v3 jpg still has a ~35px beige ceiling band at the top-right, but the .back3::before gradient (9% height) hides it. Mobile 390x844 reading view: .rv-back-scaled is 336x476.5 and the inner cover lines up exactly (same top, scale 0.7636). scrollWidth 390 = clientWidth 390, so no horizontal overflow, and the full cover shows correctly.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Back cover", "issues": ["Cosmetic only: the raw back_photo_v3.jpg still has a beige ceiling band (~35px of 1248) at the top-right. The purple gradient hides it, so nothing shows when rendered. Cropping ~40px more would make the asset clean without needing the gradient."]}
+    ]
+  },
+  "test_report_links": ["/app/backend/tests/test_back_cover.py", "/app/backend/tests/test_book_api.py", "/app/backend/tests/test_layout_lock.py", "/app/test_reports/pytest/pytest_results.xml"],
+  "action_items": [],
+  "critical_code_review_comments": ["The header label condition (Reader.jsx:204) correctly also covers the desktop spread where the back cover is the right-hand page (current+1)."],
+  "updated_files": ["/app/backend/tests/test_back_cover.py (v2 -> v3 filename)"],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "seed_data_creation": "None. db.layouts untouched.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Back cover: btn-toggle-toc -> toc-link-profil-penulis -> btn-next-page until disabled (229). In mobile reading mode, do NOT set scrollTop on every element: .rv-back-scaled is overflow:hidden and setting its scrollTop shifts the image and gives a false clipping result."
+}

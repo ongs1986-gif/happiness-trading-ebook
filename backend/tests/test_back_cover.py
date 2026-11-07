@@ -13,7 +13,7 @@ def _meta():
 
 def test_meta_back_photo_v2():
     m = _meta()
-    assert m["back_photo"] == "back_photo_v2.jpg"
+    assert m["back_photo"] == "back_photo_v3.jpg"
 
 
 def test_meta_back_tagline_and_summary():
@@ -23,7 +23,7 @@ def test_meta_back_tagline_and_summary():
 
 
 def test_back_photo_v2_served():
-    r = requests.get(f"{BASE_URL}/api/assets/back_photo_v2.jpg", timeout=30)
+    r = requests.get(f"{BASE_URL}/api/assets/back_photo_v3.jpg", timeout=30)
     assert r.status_code == 200
     assert r.headers.get("content-type", "").startswith("image/")
     assert r.content[:3] == b"\xff\xd8\xff"

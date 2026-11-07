@@ -55,6 +55,10 @@ Personal web e-book reader for "Happiness Trading" by Ongah Hermanto: realistic 
 - Author photo (assets/author_photo.jpg, cropped from upload) as portrait on profile page; LAYOUT_VERSION v2 (228 pages)
 - Warm night theme (html.theme-night CSS vars), toggle btn-theme-toggle, persisted ht-theme; PDF always renders light palette
 
+## Iteration 8 (2026-06)
+- Photo back cover (assets/back_photo_v3.jpg, cropped from author's photo; CCTV/ceiling removed + top gradient), tagline "There is no easy in becoming The New No. 1" + book summary (meta.back_tagline/back_summary)
+- Reading view renders back cover scaled (ScaledBack); header label "Cover Belakang"
+
 ## Backlog
 - P0: Author bio + photo; confirm Bagian III title; Kata Pengantar text or remove
 - P1: Better mobile legibility (text ~10px at 390px); hide blank versos on mobile
