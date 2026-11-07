@@ -1,0 +1,29 @@
+{
+  "summary": "Tested the back-cover photo fix (no CCTV camera). Backend: 17/17 pytest pass. meta.back_photo is 'back_photo_v2.jpg'. GET /api/assets/back_photo_v2.jpg returns a 200 JPEG (880x1248). The tagline and summary are present. Looking at the image file itself, the ceiling, ceiling lights, CCTV dome and projector are all gone. Desktop 1920x800 flip: TOC -> profil-penulis lands on 225-226, the author photo shows, and btn-next-page reaches 'Hal. 229 / 229' and is then disabled. back-cover shows back_photo_v2 with the tagline 'There is no easy in becoming The New No. 1', the summary, the green tag line and the footer (Ongah Hermanto / happiness trading / mynalura.com). The text panel starts at y=398 of 624, well below the face, with no overlap and no overflow (scrollHeight 624 = clientHeight 624). Mobile 390x844 reading mode: .rv-back-scaled is 336x476, the back cover inside matches, the page does not scroll sideways, and the layout matches desktop. Regression: '/ 229' indicator and the front cover are OK. The v2 layout for the new content hash 81480ab829850375 is locked at 230 pages; the client only GETs it, no POST.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Back cover (flip + mobile)", "issues": [
+        "A thin (~8-10px) beige/dark-grey sliver of the ceiling edge still shows along the top of back_photo_v2.jpg (darkest at the top-right corner). There is no CCTV or projector, but cropping about 15px more off the top would leave pure purple backdrop.",
+        "The 'There is' / 'NO Easy' letters on the backdrop sit right against the left edge of the page with object-fit: cover (cosmetic)."
+      ]},
+      {"screen": "Header on the back cover", "issues": ["The header subtitle still says 'Profil Penulis' when viewing the back cover (page 229). Minor."]}
+    ]
+  },
+  "test_report_links": ["/app/backend/tests/test_back_cover.py", "/app/backend/tests/test_layout_lock.py", "/app/backend/tests/test_book_api.py", "/app/test_reports/pytest/pytest_results.xml"],
+  "action_items": [
+    "Optional: crop about 15px more off the top of back_photo_v2.jpg to remove the remaining ceiling-edge sliver.",
+    "Optional: change the header section label on the back cover."
+  ],
+  "critical_code_review_comments": [
+    "POST /api/layout locks the first layout for any key, including versions the client doesn't use (v1). The old test_layout_lock.py hardcoded the hash and v1, and its POST of 1 junk page locked a junk layout for 81480ab829850375:v1 once the content hash changed. I deleted that one record (created by the test); the frontend uses v2, so no user was affected. Server-side validation of LAYOUT_VERSION and page count is still recommended."
+  ],
+  "updated_files": ["/app/backend/tests/test_back_cover.py (new)", "/app/backend/tests/test_layout_lock.py (dynamic hash, v2 key, skips the POST when no layout is locked yet)"],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "seed_data_creation": "None kept. The only record created by testing (junk layout 81480ab829850375:v1, 1 page) was deleted by key. db.layouts v2 entries were left intact.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "LAYOUT_VERSION is v2 (frontend/src/lib/layoutStore.js). The content hash changes when content changes, so load the frontend once before running test_layout_lock.py. Back cover: TOC -> toc-link-profil-penulis (225-226), then btn-next-page twice to reach 229. Use add_init_script guarded by sessionStorage to set localStorage."
+}

@@ -200,7 +200,8 @@ export default function Reader() {
         <Toolbar onToc={() => setTocOpen(true)} onPrev={readMode ? () => stepSection(-1) : prev} onNext={readMode ? () => stepSection(1) : next}
           fontPct={fontPct} onFont={setFontPct} night={night} onNight={() => setNight(!night)}
           current={current} total={pages.length} readMode={readMode} onReadMode={toggleReadMode}
-          mobile={mobile || readMode} onPdf={() => setPdf((s) => ({ ...s, open: true }))} sectionTitle={section?.title}
+          mobile={mobile || readMode} onPdf={() => setPdf((s) => ({ ...s, open: true }))}
+          sectionTitle={!readMode && (pages[current]?.kind === "back" || (!mobile && pages[current + 1]?.kind === "back")) ? "Cover Belakang" : section?.title}
           hlMode={hlMode} onHl={() => { setHlMode(!hlMode); toast(hlMode ? "Mode stabilo nonaktif" : "Mode stabilo aktif — ketuk paragraf untuk menandai"); }}
           bookmarked={isBookmarked} onBookmark={() => toggleBookmark(current, section?.title || "Sampul")}
           sound={sound} onSound={() => setSound(!sound)} />

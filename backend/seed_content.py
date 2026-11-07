@@ -1,4 +1,4 @@
-SEED_VERSION = 10
+SEED_VERSION = 11
 
 PLACEHOLDER = "[Teks contoh — akan diganti dengan naskah asli dari penulis.]"
 
@@ -146,7 +146,7 @@ META = {
     "year": "2026",
     "front_cover": "cover_front.jpg",
     "author_photo": "author_photo.jpg",
-    "back_photo": "back_photo_v2.jpg",
+    "back_photo": "back_photo_v3.jpg",
     "back_tagline": "There is no easy in becoming The New No. 1",
     "back_summary": "Menjadi The New No. 1 bukan tentang menang setiap hari. Ini tentang menjadi versi terbaik diri sendiri: membangun pondasi profesional, menguasai emosi, membaca pasar dengan pikiran jernih, menjaga modal, dan tetap utuh saat rugi serta rendah hati saat untung.",
     "back_blurb": "Trading bukan hanya tentang membaca pasar. Trading adalah perjalanan membaca diri sendiri. Happiness Trading mengajak Anda membangun fondasi profesional, menguasai emosi, membaca pasar dengan jernih, menjaga modal dengan matematika kedamaian batin, hingga menjadi The Happiness Trader — tetap utuh saat rugi, rendah hati saat untung.",
