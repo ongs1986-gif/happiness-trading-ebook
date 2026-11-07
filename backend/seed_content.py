@@ -1,4 +1,4 @@
-SEED_VERSION = 6
+SEED_VERSION = 8
 
 PLACEHOLDER = "[Teks contoh — akan diganti dengan naskah asli dari penulis.]"
 
