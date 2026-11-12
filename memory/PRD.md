@@ -71,3 +71,4 @@ Personal web e-book reader for "Happiness Trading" by Ongah Hermanto: realistic 
 - API: GET /api/print/files, GET /api/print/files/{name}; UI: "File untuk percetakan" section in PDF modal (PrintFiles.jsx)
 - Regenerate after content changes: `cd /app/backend && python3 -m print.build_print` (~40s)
 - Pending: deploy to buku.mynalura.com (user must confirm 50 ECU); spine width to confirm with printer's paper
+- Update: print files removed from reader UI (user request: nothing for publisher visible when published). Endpoints /api/print/files* now require ?key=PRINT_ACCESS_KEY (backend/.env); 404 otherwise.

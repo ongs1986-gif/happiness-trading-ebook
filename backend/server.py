@@ -143,13 +143,20 @@ async def get_asset(name: str):
 PRINT_DIR = ROOT_DIR / "print" / "output"
 
 
+def check_print_key(key: str):
+    if key != os.environ["PRINT_ACCESS_KEY"]:
+        raise HTTPException(404, "Not found")
+
+
 @api_router.get("/print/files")
-async def list_print_files():
+async def list_print_files(key: str = ""):
+    check_print_key(key)
     return [{"name": f.name, "size": f.stat().st_size} for f in sorted(PRINT_DIR.glob("HappinessTrading_*"))]
 
 
 @api_router.get("/print/files/{name}")
-async def get_print_file(name: str):
+async def get_print_file(name: str, key: str = ""):
+    check_print_key(key)
     path = (PRINT_DIR / name).resolve()
     if path.parent != PRINT_DIR.resolve() or not path.is_file():
         raise HTTPException(404, "Not found")

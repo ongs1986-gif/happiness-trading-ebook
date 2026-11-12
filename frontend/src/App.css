@@ -467,15 +467,3 @@ html.theme-night .print-root .pg-side-left, html.theme-night .print-root .pg-sid
   .tb-pill { padding: 6px 9px; font-size: 11px; }
 }
 
-/* Print files */
-.print-files { margin-top: 6px; padding-top: 16px; border-top: 1px solid #E8E2D5; }
-.print-files-head { display: flex; align-items: center; gap: 8px; font-family: Montserrat, sans-serif; font-weight: 600; font-size: 13px; color: #2C2A29; }
-.print-files-note { font-size: 12px; line-height: 1.55; color: #65605A; margin: 6px 0 12px; }
-.print-size { margin-bottom: 10px; }
-.print-size-label { font-family: Montserrat, sans-serif; font-size: 10px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--green); margin-bottom: 4px; }
-.print-link { display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: 8px; font-size: 13px; color: #2C2A29; transition: background-color .15s; }
-.print-link:hover { background: #F3EEE1; }
-.print-size-mb { margin-left: auto; font-size: 11px; color: #9A9183; }
-html.theme-night .print-files { border-color: var(--line); }
-html.theme-night .print-files-head, html.theme-night .print-link { color: var(--charcoal); }
-html.theme-night .print-link:hover { background: #2A241D; }

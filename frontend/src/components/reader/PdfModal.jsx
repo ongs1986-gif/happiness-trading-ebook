@@ -1,7 +1,6 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "../ui/dialog";
 import { Progress } from "../ui/progress";
 import { Download, Loader2 } from "lucide-react";
-import { PrintFiles } from "./PrintFiles";
 
 export function PdfModal({ open, onOpenChange, onStart, progress, busy, total }) {
   return (
@@ -25,7 +24,6 @@ export function PdfModal({ open, onOpenChange, onStart, progress, busy, total })
             <Download size={16} /> Mulai Unduh PDF (A5)
           </button>
         )}
-        <PrintFiles />
       </DialogContent>
     </Dialog>
   );
