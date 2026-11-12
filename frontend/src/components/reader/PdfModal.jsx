@@ -1,11 +1,12 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "../ui/dialog";
 import { Progress } from "../ui/progress";
 import { Download, Loader2 } from "lucide-react";
+import { PrintFiles } from "./PrintFiles";
 
 export function PdfModal({ open, onOpenChange, onStart, progress, busy, total }) {
   return (
     <Dialog open={open} onOpenChange={(v) => !busy && onOpenChange(v)}>
-      <DialogContent className="bg-[#FDFBF7] border-[#E8E2D5] sm:max-w-md" data-testid="pdf-download-modal">
+      <DialogContent className="bg-[#FDFBF7] border-[#E8E2D5] sm:max-w-md max-h-[90vh] overflow-y-auto" data-testid="pdf-download-modal">
         <DialogHeader>
           <DialogTitle className="font-display text-2xl text-[#2C2A29]">Unduh sebagai PDF</DialogTitle>
           <DialogDescription className="text-[#65605A]">
@@ -24,6 +25,7 @@ export function PdfModal({ open, onOpenChange, onStart, progress, busy, total })
             <Download size={16} /> Mulai Unduh PDF (A5)
           </button>
         )}
+        <PrintFiles />
       </DialogContent>
     </Dialog>
   );

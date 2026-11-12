@@ -140,6 +140,22 @@ async def get_asset(name: str):
     return FileResponse(path, headers={"Cache-Control": "public, max-age=86400"})
 
 
+PRINT_DIR = ROOT_DIR / "print" / "output"
+
+
+@api_router.get("/print/files")
+async def list_print_files():
+    return [{"name": f.name, "size": f.stat().st_size} for f in sorted(PRINT_DIR.glob("HappinessTrading_*"))]
+
+
+@api_router.get("/print/files/{name}")
+async def get_print_file(name: str):
+    path = (PRINT_DIR / name).resolve()
+    if path.parent != PRINT_DIR.resolve() or not path.is_file():
+        raise HTTPException(404, "Not found")
+    return FileResponse(path, filename=name)
+
+
 app.include_router(api_router)
 
 app.add_middleware(

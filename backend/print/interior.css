@@ -1,0 +1,98 @@
+@page {
+  size: @@W@@ @@H@@;
+  bleed: 3mm;
+  margin: 17mm 14mm 19mm 19mm;
+  @bottom-center { content: counter(page); font-family: Montserrat; font-weight: 600; font-size: 7.5pt; color: #8A8172; }
+}
+@page :left {
+  margin-left: 14mm; margin-right: 19mm;
+  @top-left { content: "Happiness Trading"; font-family: Montserrat; font-weight: 600; font-size: 6.5pt; letter-spacing: .18em; text-transform: uppercase; color: #A69C8A; vertical-align: bottom; padding-bottom: 4mm; }
+}
+@page :right {
+  @top-right { content: string(chap); font-family: Montserrat; font-weight: 600; font-size: 6.5pt; letter-spacing: .18em; text-transform: uppercase; color: #A69C8A; vertical-align: bottom; padding-bottom: 4mm; }
+}
+@page :blank { @top-left { content: none; } @top-right { content: none; } @bottom-center { content: none; } }
+@page plain { @top-left { content: none; } @top-right { content: none; } @bottom-center { content: none; } }
+@page :nth(1 of opener) { @top-left { content: none; } @top-right { content: none; } }
+
+html { font-family: Inter; font-size: 9.6pt; line-height: 1.58; color: #2C2A29; }
+body { margin: 0; }
+section { break-before: right; }
+section.copyright { break-before: left; }
+section.blankpad { break-before: page; height: 1px; }
+.plain { page: plain; }
+.chapter { page: opener; }
+
+.kicker { font-family: Montserrat; font-weight: 600; font-size: 7pt; letter-spacing: .24em; text-transform: uppercase; color: #3B8258; }
+.rule { width: 12mm; height: 0.7mm; background: linear-gradient(90deg, #C84B4B 50%, #3B8258 50%); margin: 6mm 0; }
+
+.title-page { padding-top: 38mm; }
+.tp-title { font-family: 'Playfair Display'; font-weight: 700; font-size: 34pt; line-height: 1.05; margin: 5mm 0 4mm; }
+.tp-sub { font-family: Montserrat; font-weight: 500; font-size: 9.5pt; color: #6F675B; margin: 0; }
+.tp-author { font-family: Montserrat; font-weight: 700; font-size: 11pt; letter-spacing: .06em; margin: 0; }
+.tp-pub { font-family: Montserrat; font-weight: 500; font-size: 8pt; color: #8A8172; margin-top: 1mm; }
+.copyright { padding-top: 110mm; font-size: 7.5pt; line-height: 1.6; color: #5A544B; }
+.copyright p { margin: 0 0 3mm; }
+
+.sec-title, .ch-title { string-set: chap attr(data-run); }
+.sec-title { font-family: 'Playfair Display'; font-weight: 700; font-size: 21pt; line-height: 1.15; margin: 8mm 0 7mm; padding-bottom: 4mm; position: relative; }
+.sec-title::after { content: ""; position: absolute; left: 0; bottom: 0; width: 10mm; height: 0.6mm; background: #C84B4B; }
+
+.toc .toc-part { margin-top: 4.5mm; font-family: Montserrat; font-weight: 700; font-size: 8.4pt; color: #3B8258; }
+.toc .toc-item { font-size: 8.6pt; margin: 1mm 0; }
+.toc .toc-part + .toc-item { margin-top: 1.6mm; }
+.toc a { color: inherit; text-decoration: none; }
+.toc a::after { content: leader('.') target-counter(attr(href), page); color: #6F675B; }
+
+.part { text-align: left; padding-top: 42mm; }
+.part-num { font-family: 'Playfair Display'; font-weight: 700; font-size: 72pt; line-height: 1; color: #EFE8DA; margin-bottom: 6mm; }
+.part-title { font-family: 'Playfair Display'; font-weight: 700; font-size: 23pt; line-height: 1.15; margin: 4mm 0 0; }
+.part-desc { font-family: Montserrat; font-weight: 500; font-size: 9pt; line-height: 1.6; color: #6F675B; }
+
+.ch-open { margin-bottom: 7mm; }
+.ch-open *, .sec-title, .ch-sub { break-after: auto; }
+.ch-illus { display: block; width: 100%; height: 62mm; object-fit: cover; border-radius: 1.2mm; margin-bottom: 7mm; }
+.ch-title { font-family: 'Playfair Display'; font-weight: 700; font-size: 20pt; line-height: 1.15; margin: 2.5mm 0 2mm; }
+.ch-sub { font-family: Montserrat; font-weight: 500; font-size: 9pt; line-height: 1.5; color: #7A7163; margin: 0 0 5mm; }
+
+.content p { margin: 0; text-indent: 1.3em; text-align: justify; hyphens: auto; orphans: 2; widows: 2; }
+.content h2 + p, .content h3 + p, .content figure + p, .content blockquote + p, .content ul + p, .content .box + p, .sec-title + .content p:first-child { text-indent: 0; }
+.content h2 { font-family: Montserrat; font-weight: 600; font-size: 10pt; margin: 5.5mm 0 2mm; break-after: avoid; }
+.content h3 { font-family: Montserrat; font-weight: 600; font-size: 9.4pt; color: #3d3a38; margin: 4mm 0 1.5mm; break-after: avoid; }
+blockquote { font-family: 'Playfair Display'; font-style: italic; font-size: 11.5pt; line-height: 1.5; margin: 4.5mm 0; padding: 0.5mm 0 0.5mm 4.5mm; border-left: 0.5mm solid #3B8258; color: #3d3a38; break-inside: avoid; }
+ul { margin: 1.5mm 0 2.5mm; padding-left: 5mm; list-style: none; }
+li { position: relative; margin: 0.6mm 0; }
+li::before { content: ""; position: absolute; left: -4mm; top: 0.62em; width: 1.5mm; height: 1.5mm; border-radius: 0.3mm; background: #3B8258; }
+figure { margin: 3mm 0 4mm; break-inside: avoid; }
+figure img { display: block; max-width: 100%; max-height: 80mm; margin: 0 auto; border-radius: 0.8mm; }
+.verse { font-family: 'Playfair Display'; font-style: italic; font-size: 11pt; line-height: 1.7; text-align: center !important; text-indent: 0 !important; margin: 0 0 5mm !important; color: #3d3a38; break-inside: avoid; hyphens: manual; }
+
+.box { background: #F3EEE1; border-left: 0.8mm solid #3B8258; border-radius: 0 1.5mm 1.5mm 0; padding: 3.5mm 4.5mm 3.5mm 5mm; margin: 6mm 0 3mm; }
+.box h2 { margin-top: 0; color: #3B8258; font-size: 7.8pt; letter-spacing: .16em; text-transform: uppercase; }
+.box h3 { color: #C84B4B; font-size: 8.6pt; margin-top: 3mm; }
+.box p { text-indent: 0 !important; text-align: left; }
+
+.ws-h { font-family: Montserrat; font-weight: 700; font-size: 9.6pt; color: #3B8258; margin: 5mm 0 2mm; break-after: avoid; }
+.ws-p { font-size: 9pt; line-height: 1.55; color: #45413e; margin: 0 0 2.5mm; }
+.ws-item { margin-bottom: 3.5mm; break-inside: avoid; }
+.ws-label { font-family: Montserrat; font-weight: 600; font-size: 8.4pt; line-height: 1.45; margin-bottom: 1mm; }
+.wl { height: 7.5mm; border-bottom: 0.25mm solid #CFC5B2; }
+.ws-input { display: flex; align-items: flex-end; gap: 2mm; height: 8mm; border-bottom: 0.25mm solid #CFC5B2; }
+.ws-input .fill { flex: 1; }
+.aff { font-family: Montserrat; font-weight: 600; font-size: 8pt; color: #8A8172; padding-bottom: 0.8mm; }
+.chk { display: flex; gap: 2.5mm; font-size: 8.8pt; margin: 1.2mm 0; }
+.cb { flex: none; width: 3mm; height: 3mm; border: 0.3mm solid #8A8172; border-radius: 0.5mm; margin-top: 0.6mm; }
+.q-head { break-before: page; margin-top: 0; }
+.q { margin: 0 0 4.5mm; break-inside: avoid; }
+.qt { font-family: Montserrat; font-weight: 600; font-size: 8.8pt; line-height: 1.45; margin-bottom: 1.5mm; }
+.opt { display: flex; gap: 2.5mm; font-size: 8.8pt; margin: 1mm 0 1mm 2mm; }
+.ol { flex: none; width: 4.2mm; height: 4.2mm; border: 0.3mm solid #8A8172; border-radius: 50%; font-family: Montserrat; font-weight: 600; font-size: 6.5pt; line-height: 4.2mm; text-align: center; color: #6F675B; }
+
+.chapter h2 { font-family: Montserrat; }
+#s-kunci h2 { font-family: Montserrat; font-weight: 700; font-size: 9.4pt; color: #3B8258; margin: 5mm 0 2mm; }
+.ak-q { font-size: 8.6pt; margin: 0 0 2mm; break-inside: avoid; }
+.ak-x { color: #6F675B; font-size: 8pt; font-style: italic; }
+
+.author-photo { float: left; width: 30mm; height: 40mm; object-fit: cover; border-radius: 1.2mm; margin: 1mm 5mm 3mm 0; }
+.author .content p:first-child { text-indent: 0; }
+.verse-sec .content { margin-top: 6mm; }

@@ -63,3 +63,11 @@ Personal web e-book reader for "Happiness Trading" by Ongah Hermanto: realistic 
 - P0: Author bio + photo; confirm Bagian III title; Kata Pengantar text or remove
 - P1: Better mobile legibility (text ~10px at 390px); hide blank versos on mobile
 - P2: Move images to object storage; embed in mynalura.com; sentence-level highlights/notes
+
+## Iteration 9 (2026-06) — Print-ready files
+- `backend/print/build_print.py` (WeasyPrint) → `backend/print/output/`: per size (14x21, A5): interior PDF (full colour, bleed 3mm, fonts embedded, live text, multiple of 4 pages: 164 / 168), cover spread PDF (back + spine + front, spine = pages × 0.06mm bookpaper estimate, ISBN box), editable DOCX (`build_docx.py`, mirrored margins, TOC field), ZIP bundle with fonts + PETUNJUK_PERCETAKAN.txt
+- Front cover redrawn as vector (candles/title) since only a mockup photo exists; back uses back_photo_v3 (~150 dpi)
+- Quizzes printed as worksheets + "Quiz Cepat" with A–D options; answer key section "Kunci Jawaban" before Profil Penulis; copyright/ISBN page added
+- API: GET /api/print/files, GET /api/print/files/{name}; UI: "File untuk percetakan" section in PDF modal (PrintFiles.jsx)
+- Regenerate after content changes: `cd /app/backend && python3 -m print.build_print` (~40s)
+- Pending: deploy to buku.mynalura.com (user must confirm 50 ECU); spine width to confirm with printer's paper
