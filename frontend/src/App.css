@@ -156,11 +156,12 @@
 /* TOC page */
 .toc-page { padding-top: 54px; }
 .toc-list { display: flex; flex-direction: column; }
-.toc-row { display: flex; align-items: center; gap: 6px; font-size: 11.5px; line-height: 1.5; padding: 3.5px 0; }
+.toc-row { display: flex; align-items: flex-end; gap: 6px; font-size: 11.5px; line-height: 1.4; padding: 2.5px 0; }
 .toc-label { font-family: Montserrat, sans-serif; font-weight: 600; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; color: var(--green); min-width: 40px; }
-.toc-text { white-space: nowrap; }
-.toc-dots { flex: 1 1 0; align-self: center; height: 1px; margin-top: 5px; background-image: linear-gradient(to right, #B9AE98 50%, transparent 50%); background-size: 4px 1px; background-repeat: repeat-x; min-width: 10px; }
-.toc-num { min-width: 22px; text-align: right; font-family: Montserrat, sans-serif; font-size: 10.5px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.toc-row .toc-text { flex: 0 1 auto; min-width: 0; max-width: 228px; }
+.toc-label { align-self: flex-start; padding-top: 2px; white-space: nowrap; }
+.toc-dots { flex: 1 1 0; align-self: flex-end; height: 1px; margin-bottom: 6px; background-image: linear-gradient(to right, #B9AE98 50%, transparent 50%); background-size: 4px 1px; background-repeat: repeat-x; min-width: 10px; }
+.toc-num { flex: none; min-width: 22px; text-align: right; font-family: Montserrat, sans-serif; font-size: 10.5px; font-weight: 600; font-variant-numeric: tabular-nums; }
 .toc-part { margin-top: 8px; font-family: "Playfair Display", serif; font-weight: 700; font-size: 12.5px; }
 .toc-part .toc-label { color: var(--red); }
 
@@ -467,3 +468,18 @@ html.theme-night .print-root .pg-side-left, html.theme-night .print-root .pg-sid
   .tb-pill { padding: 6px 9px; font-size: 11px; }
 }
 
+
+/* Narrator */
+.narrator-bar { position: fixed; z-index: 45; left: 50%; bottom: 22px; transform: translateX(-50%); display: flex; align-items: center; gap: 10px; max-width: calc(100vw - 24px); padding: 8px 10px 8px 14px; border-radius: 999px; background: #2C2A29; color: #FDFBF7; box-shadow: 0 14px 40px rgba(30, 22, 12, .28); animation: narrator-in .3s ease-out; }
+@keyframes narrator-in { from { opacity: 0; transform: translate(-50%, 12px); } to { opacity: 1; transform: translate(-50%, 0); } }
+.narrator-ic { color: #8FD27E; flex: none; }
+.narrator-label { font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 220px; }
+.narrator-btn { flex: none; width: 32px; height: 32px; border-radius: 999px; display: grid; place-items: center; color: #FDFBF7; transition: background-color .15s; }
+.narrator-btn:hover { background: rgba(255, 255, 255, .12); }
+.narrator-main { background: #3B8258; }
+.narrator-main:hover { background: #46956A; }
+.narrator-rates { display: flex; gap: 2px; padding: 2px; border-radius: 999px; background: rgba(255, 255, 255, .08); }
+.narrator-rate { font-family: Montserrat, sans-serif; font-size: 11px; font-weight: 600; padding: 5px 8px; border-radius: 999px; color: #CFC8BC; transition: background-color .15s, color .15s; }
+.narrator-rate.is-on { background: #FDFBF7; color: #2C2A29; }
+@media (max-width: 520px) { .narrator-label { max-width: 90px; } .narrator-rate { padding: 5px 6px; } .narrator-bar { gap: 6px; } }
+.tb-icon.is-on-narr { background: #3B8258; color: #fff; }

@@ -1,10 +1,12 @@
-import { AlignLeft, BookOpen, Bookmark, BookmarkCheck, ChevronLeft, ChevronRight, Download, Highlighter, List, Moon, Sun, Volume2, VolumeX } from "lucide-react";
+import { AlignLeft, Headphones, BookOpen, Bookmark, BookmarkCheck, ChevronLeft, ChevronRight, Download, Highlighter, List, Moon, Sun, Volume2, VolumeX } from "lucide-react";
 import { FontSizeControl } from "./FontSizeControl";
 
-function ToolIcons({ hlMode, onHl, bookmarked, onBookmark, sound, onSound, readMode, onReadMode, fontPct, onFont, night, onNight }) {
+function ToolIcons({ narrating, onNarrate, hlMode, onHl, bookmarked, onBookmark, sound, onSound, readMode, onReadMode, fontPct, onFont, night, onNight }) {
   return (
     <div className="flex items-center gap-1.5">
       {readMode && <FontSizeControl value={fontPct} onChange={onFont} />}
+      <button type="button" className={`tb-icon ${narrating ? "is-on-narr" : ""}`} data-testid="btn-narrator" onClick={onNarrate}
+        aria-label="Dengarkan buku" title={narrating ? "Hentikan suara pembaca" : "Dengarkan buku dibacakan"}><Headphones size={16} /></button>
       <button type="button" className={`tb-icon ${night ? "is-on-night" : ""}`} data-testid="btn-theme-toggle" onClick={onNight}
         aria-label="Mode malam" title={night ? "Mode siang" : "Mode malam"}>{night ? <Sun size={16} /> : <Moon size={16} />}</button>
       <button type="button" className={`tb-icon ${readMode ? "is-on-bm" : ""}`} data-testid="btn-reading-mode" onClick={onReadMode}

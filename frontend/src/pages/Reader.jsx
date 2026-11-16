@@ -15,6 +15,9 @@ import { TocSidebar } from "../components/reader/TocSidebar";
 import { PdfModal } from "../components/reader/PdfModal";
 import { ReadingView } from "../components/reader/ReadingView";
 import { ContinueCard } from "../components/reader/ContinueCard";
+import { NarratorBar } from "../components/reader/NarratorBar";
+import { useNarrator } from "../components/reader/useNarrator";
+import { pageText } from "../lib/narration";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 const FONTS = ['700 30px "Playfair Display"', 'italic 400 20px "Playfair Display"', '600 13px Montserrat', '400 12.5px Inter', '500 12px Inter'];
@@ -84,6 +87,11 @@ export default function Reader() {
     return v ? v === "read" : window.innerWidth < 1024;
   });
   const [readKey, setReadKey] = useState(null);
+  const narr = useNarrator();
+  const curRef = useRef(current);
+  const mobileRef = useRef(mobile);
+  const autoFlipRef = useRef(false);
+  useEffect(() => { curRef.current = current; mobileRef.current = mobile; }, [current, mobile]);
 
   useEffect(() => { loadBook().then(setData).catch(() => setError(true)); }, []);
   useEffect(() => { if (data && resume === null) localStorage.setItem("ht-page", String(current)); startRef.current = current; }, [current, data, resume]);
@@ -127,6 +135,20 @@ export default function Reader() {
   };
   const onReadSection = useCallback((key) => { setReadKey(key); const p = data?.built.starts[key]; if (p !== undefined) setCurrent(p); }, [data]);
   const secKeys = useMemo(() => data?.book.sections.filter((s) => s.type !== "toc").map((s) => s.key) || [], [data]);
+  const pageTexts = useMemo(() => pages?.map((p) => pageText(p, data.book)) || [], [pages, data]);
+  const secTexts = useMemo(() => secKeys.map((k) => pages.filter((p) => p.section?.key === k).map((p) => pageText(p, data.book)).join(" ")), [secKeys, pages, data]);
+  const startNarration = () => {
+    if (!narr.supported) { toast.error("Browser ini belum mendukung fitur suara"); return; }
+    if (readMode) {
+      narr.start(secTexts, Math.max(0, secKeys.indexOf(readKey)), (j) => document.getElementById(`sec-${secKeys[j]}`)?.scrollIntoView({ behavior: "smooth" }));
+      return;
+    }
+    narr.start(pageTexts, curRef.current, (j) => {
+      const c = curRef.current;
+      const visible = mobileRef.current ? j === c : j === c || (c > 0 && j === c + 1);
+      if (!visible) { autoFlipRef.current = true; flip(j); }
+    });
+  };
   const stepSection = (d) => {
     const i = Math.max(0, secKeys.indexOf(readKey));
     const k = secKeys[Math.min(secKeys.length - 1, Math.max(0, i + d))];
@@ -134,6 +156,7 @@ export default function Reader() {
   };
   const toggleReadMode = () => {
     const nextMode = !readMode;
+    narr.stop();
     localStorage.setItem("ht-mode", nextMode ? "read" : "flip");
     if (!nextMode) {
       const p = !mobile && current > 0 && current % 2 === 0 ? current - 1 : current;
@@ -204,7 +227,8 @@ export default function Reader() {
           sectionTitle={!readMode && (pages[current]?.kind === "back" || (!mobile && pages[current + 1]?.kind === "back")) ? "Cover Belakang" : section?.title}
           hlMode={hlMode} onHl={() => { setHlMode(!hlMode); toast(hlMode ? "Mode stabilo nonaktif" : "Mode stabilo aktif — ketuk paragraf untuk menandai"); }}
           bookmarked={isBookmarked} onBookmark={() => toggleBookmark(current, section?.title || "Sampul")}
-          sound={sound} onSound={() => setSound(!sound)} />
+          sound={sound} onSound={() => setSound(!sound)}
+          narrating={narr.on} onNarrate={() => (narr.on ? narr.stop() : startNarration())} />
         {readMode ? (
           <main className="rv-stage" data-testid="book-canvas-reading">
             <ReadingView book={data.book} onSection={onReadSection} fontPct={fontPct} />
@@ -220,13 +244,21 @@ export default function Reader() {
               flippingTime={850} mobileScrollSupport startPage={safeStart} startZIndex={0}
               autoSize={false} clickEventForward useMouseEvents swipeDistance={30} showPageCorners
               disableFlipByClick={false} className="flipbook" style={{}}
-              onFlip={(e) => { setCurrent(e.data); setResume(null); if (soundRef.current) playFlipSound(); }}
+              onFlip={(e) => {
+                setCurrent(e.data); curRef.current = e.data; setResume(null); if (soundRef.current) playFlipSound();
+                if (autoFlipRef.current) autoFlipRef.current = false;
+                else if (narr.playing) narr.speakFrom(e.data);
+              }}
             >
               {children}
             </HTMLFlipBook>
           </div>
           <p className="stage-hint">{mobile ? "Geser untuk membalik halaman" : "Klik sudut halaman atau gunakan tombol panah ← →"}</p>
         </main>
+        )}
+        {narr.on && (
+          <NarratorBar playing={narr.playing} rate={narr.rate} onPlay={narr.resume} onPause={narr.pause} onStop={narr.stop} onRate={narr.setRate}
+            label={readMode ? data.book.sections.find((x) => x.key === secKeys[narr.idx])?.title || "" : `Hal. ${narr.idx}`} />
         )}
         <TocSidebar open={tocOpen} onOpenChange={setTocOpen} items={toc.items} activeKey={section?.key} onJump={jump}
           bookmarks={bookmarks} onRemoveBookmark={(b) => toggleBookmark(b.page, b.label)} highlights={hlItems} />

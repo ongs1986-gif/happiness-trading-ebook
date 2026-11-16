@@ -72,3 +72,8 @@ Personal web e-book reader for "Happiness Trading" by Ongah Hermanto: realistic 
 - Regenerate after content changes: `cd /app/backend && python3 -m print.build_print` (~40s)
 - Pending: deploy to buku.mynalura.com (user must confirm 50 ECU); spine width to confirm with printer's paper
 - Update: print files removed from reader UI (user request: nothing for publisher visible when published). Endpoints /api/print/files* now require ?key=PRINT_ACCESS_KEY (backend/.env); 404 otherwise.
+
+## Iteration 10 (2026-06) — Narrator + TOC fix
+- Read-aloud (browser Web Speech API, id-ID, prefers male voice e.g. "Microsoft Ardi/Andika", else lower pitch): toolbar headphones `btn-narrator`, floating `NarratorBar` (play/pause, speed 0.75–1.5×, stop). Auto-flips pages (flip mode) / scrolls sections (read mode); quiz/worksheet/TOC pages skipped. Files: lib/narration.js, components/reader/useNarrator.js, NarratorBar.jsx
+- Copy-paste kept enabled (user request)
+- TOC page fix: long titles now wrap, page numbers always visible (bug: `.toc-text` class collided with row class `toc-text`)
