@@ -81,3 +81,7 @@ Personal web e-book reader for "Happiness Trading" by Ongah Hermanto: realistic 
 ## Iteration 11 (2026-06) — Merge plan into NALURA
 - User decided to merge this e-book into the separate NALURA job (mynalura.com, sales page /happiness-trading) to avoid a second 50 credits/month deployment.
 - Created /app/PANDUAN_GABUNG_NALURA.md: files to move, deps, API prefix /api/ht/*, rename collections (ht_book_meta, ht_sections, ht_layouts), CSS scoping, route /happiness-trading/baca, don't move /api/print.
+
+## Iteration 12 (2026-06) — Reader PDF protection
+- Reader "Download PDF": jsPDF encryption (no open password, random owner password per export, permissions = copy only → no print, no edit) + invisible text layer (lib/pdfTextLayer.js) so quotes can be selected/copied. Verified with PyMuPDF: print False, modify False, copy True, text extractable & aligned.
+- Owner/publisher files (secret-link /api/print/files) remain unlocked & printable.

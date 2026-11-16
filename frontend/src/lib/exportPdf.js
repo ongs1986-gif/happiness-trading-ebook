@@ -1,5 +1,8 @@
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
+import { addTextLayer } from "./pdfTextLayer";
+
+const randomKey = () => Array.from(crypto.getRandomValues(new Uint8Array(24)), (b) => b.toString(16).padStart(2, "0")).join("");
 
 const waitImages = (root) => Promise.all([...root.querySelectorAll("img")].map((img) =>
   img.complete ? null : new Promise((r) => { img.onload = r; img.onerror = r; })));
@@ -7,7 +10,10 @@ const waitImages = (root) => Promise.all([...root.querySelectorAll("img")].map((
 export async function exportPdf(container, onProgress) {
   const nodes = [...container.querySelectorAll(".pg")];
   await waitImages(container);
-  const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a5", compress: true });
+  const pdf = new jsPDF({
+    orientation: "portrait", unit: "mm", format: "a5", compress: true,
+    encryption: { userPassword: "", ownerPassword: randomKey(), userPermissions: ["copy"] },
+  });
   for (let i = 0; i < nodes.length; i++) {
     const target = nodes[i];
     const canvas = await html2canvas(target, {
@@ -17,6 +23,7 @@ export async function exportPdf(container, onProgress) {
     });
     if (i > 0) pdf.addPage("a5", "portrait");
     pdf.addImage(canvas.toDataURL("image/jpeg", 0.86), "JPEG", 0, 0, 148, 210, undefined, "FAST");
+    addTextLayer(pdf, target, 148);
     onProgress(((i + 1) / nodes.length) * 100);
     await new Promise((r) => setTimeout(r, 0));
   }
