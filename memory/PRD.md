@@ -77,3 +77,7 @@ Personal web e-book reader for "Happiness Trading" by Ongah Hermanto: realistic 
 - Read-aloud (browser Web Speech API, id-ID, prefers male voice e.g. "Microsoft Ardi/Andika", else lower pitch): toolbar headphones `btn-narrator`, floating `NarratorBar` (play/pause, speed 0.75–1.5×, stop). Auto-flips pages (flip mode) / scrolls sections (read mode); quiz/worksheet/TOC pages skipped. Files: lib/narration.js, components/reader/useNarrator.js, NarratorBar.jsx
 - Copy-paste kept enabled (user request)
 - TOC page fix: long titles now wrap, page numbers always visible (bug: `.toc-text` class collided with row class `toc-text`)
+
+## Iteration 11 (2026-06) — Merge plan into NALURA
+- User decided to merge this e-book into the separate NALURA job (mynalura.com, sales page /happiness-trading) to avoid a second 50 credits/month deployment.
+- Created /app/PANDUAN_GABUNG_NALURA.md: files to move, deps, API prefix /api/ht/*, rename collections (ht_book_meta, ht_sections, ht_layouts), CSS scoping, route /happiness-trading/baca, don't move /api/print.
