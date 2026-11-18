@@ -85,3 +85,8 @@ Personal web e-book reader for "Happiness Trading" by Ongah Hermanto: realistic 
 ## Iteration 12 (2026-06) — Reader PDF protection
 - Reader "Download PDF": jsPDF encryption (no open password, random owner password per export, permissions = copy only → no print, no edit) + invisible text layer (lib/pdfTextLayer.js) so quotes can be selected/copied. Verified with PyMuPDF: print False, modify False, copy True, text extractable & aligned.
 - Owner/publisher files (secret-link /api/print/files) remain unlocked & printable.
+
+## Iteration 13 (2026-06) — Back cover image + new author photo
+- Last page now shows user's final back cover image (assets/back_cover_final.jpg, 1410x2000 ≈ A5) via meta.back_image → `.back-full` in Back component.
+- Author photo replaced with assets/author_photo_v2.jpg (cropped from user's page-225 mockup, ~143x191 source → upscaled 420x560; ask user for original photo for sharper result).
+- SEED_VERSION 12. Page count still 229. Print files (backend/print/output) NOT regenerated.

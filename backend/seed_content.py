@@ -1,4 +1,4 @@
-SEED_VERSION = 11
+SEED_VERSION = 12
 
 PLACEHOLDER = "[Teks contoh — akan diganti dengan naskah asli dari penulis.]"
 
@@ -145,7 +145,8 @@ META = {
     "publisher": "mynalura.com",
     "year": "2026",
     "front_cover": "cover_front.jpg",
-    "author_photo": "author_photo.jpg",
+    "author_photo": "author_photo_v2.jpg",
+    "back_image": "back_cover_final.jpg",
     "back_photo": "back_photo_v3.jpg",
     "back_tagline": "There is no easy in becoming The New No. 1",
     "back_summary": "Menjadi The New No. 1 bukan tentang menang setiap hari. Ini tentang menjadi versi terbaik diri sendiri: membangun pondasi profesional, menguasai emosi, membaca pasar dengan pikiran jernih, menjaga modal, dan tetap utuh saat rugi serta rendah hati saat untung.",

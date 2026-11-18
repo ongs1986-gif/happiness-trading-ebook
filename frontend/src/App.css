@@ -483,3 +483,6 @@ html.theme-night .print-root .pg-side-left, html.theme-night .print-root .pg-sid
 .narrator-rate.is-on { background: #FDFBF7; color: #2C2A29; }
 @media (max-width: 520px) { .narrator-label { max-width: 90px; } .narrator-rate { padding: 5px 6px; } .narrator-bar { gap: 6px; } }
 .tb-icon.is-on-narr { background: #3B8258; color: #fff; }
+
+.back-full { position: absolute; inset: 0; background: #fff; overflow: hidden; }
+.back-full img { width: 100%; height: 100%; object-fit: cover; display: block; }

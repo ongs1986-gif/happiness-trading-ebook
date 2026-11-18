@@ -61,6 +61,13 @@ export function CandleFace({ happy, size = 46 }) {
 
 export function Back({ book }) {
   const m = book.meta;
+  if (m.back_image) {
+    return (
+      <div className="back-full" data-testid="back-cover">
+        <img src={assetUrl(m.back_image)} alt="Sampul belakang Happiness Trading" crossOrigin="anonymous" />
+      </div>
+    );
+  }
   if (m.back_photo) {
     return (
       <div className="back3" data-testid="back-cover">
