@@ -1,4 +1,4 @@
-SEED_VERSION = 12
+SEED_VERSION = 13
 
 PLACEHOLDER = "[Teks contoh — akan diganti dengan naskah asli dari penulis.]"
 
@@ -145,7 +145,7 @@ META = {
     "publisher": "mynalura.com",
     "year": "2026",
     "front_cover": "cover_front.jpg",
-    "author_photo": "author_photo_v2.jpg",
+    "author_photo": "author_photo_v3.jpg",
     "back_image": "back_cover_final.jpg",
     "back_photo": "back_photo_v3.jpg",
     "back_tagline": "There is no easy in becoming The New No. 1",

@@ -90,3 +90,4 @@ Personal web e-book reader for "Happiness Trading" by Ongah Hermanto: realistic 
 - Last page now shows user's final back cover image (assets/back_cover_final.jpg, 1410x2000 ≈ A5) via meta.back_image → `.back-full` in Back component.
 - Author photo replaced with assets/author_photo_v2.jpg (cropped from user's page-225 mockup, ~143x191 source → upscaled 420x560; ask user for original photo for sharper result).
 - SEED_VERSION 12. Page count still 229. Print files (backend/print/output) NOT regenerated.
+- Iteration 13b: author photo now assets/author_photo_v3.jpg (user's original 500x666, 3:4). SEED_VERSION 13.
